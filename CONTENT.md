@@ -16,10 +16,10 @@ src/content/
 ├── site.md              site-wide settings + about text
 ├── organizers/*.md      one file per organizer
 ├── events/*.md          one file per meetup (filename = URL slug: /events/<slug>)
-└── links/*.md           one file per link
+└── projects/*.md           one file per project
 static/images/
 ├── events/<slug>/       covers and photos
-├── links/               link thumbnails
+├── projects/               project thumbnails
 └── organizers/          headshots
 ```
 
@@ -33,11 +33,11 @@ coordinates: 35.6595°N 139.7005°E
 lumaUrl: https://luma.com/tokyotech
 githubUrl: https://github.com/liquidx/geotokyo-site
 newsletterBlurb: One email when the next meetup is scheduled…
-linksIntro: Projects we talked about, and ones we're planning to. # /links headline
-linksBlurb: Tools, datasets, maps and papers… # /links intro
+projectsIntro: Projects we talked about, and ones we're planning to. # /projects headline
+projectsBlurb: Tools, datasets, maps and papers… # /projects intro
 nav:
   - { label: Events, href: /events }
-  - { label: Links, href: /links }
+  - { label: Projects, href: /projects }
   - { label: Subscribe, href: '#subscribe' }
 ---
 About text (Markdown). Not rendered anywhere yet; kept for future use.
@@ -49,7 +49,7 @@ About text (Markdown). Not rendered anywhere yet; kept for future use.
 ---
 number: 9 # required, used for "#9" labels and ordering
 title: 'Geo Tokyo Meetup : Summer 2026' # quote titles containing ":"
-shortName: Summer 2026 # optional; used for upcoming events on /links
+shortName: Summer 2026 # optional; used for upcoming events on /projects
 date: '2026-09-17' # required, quoted ISO date
 startTime: '18:00' # optional
 endTime: '20:00' # optional
@@ -75,23 +75,23 @@ photos: # optional; first photo is shown large
 Description shown in the event sidebar (Markdown).
 ```
 
-## links/<id>.md
+## projects/<id>.md
 
 ```yaml
 ---
 name: Protomaps
 url: https://protomaps.com # the host is derived from this
 description: Single-file PMTiles basemaps you can host anywhere.
-tag: tiles # free text; becomes a filter chip on /links
+tag: tiles # free text; becomes a filter chip on /projects
 event: 8 # event number it was shared at (or planned for)
 status: discussed # discussed | planned (defaults from the event date)
-image: /images/links/protomaps.png # optional thumbnail (3:2 on desktop, 1:1 on mobile)
+image: /images/projects/protomaps.png # optional thumbnail (3:2 at 120px wide on desktop, 1:1 at 64px on mobile)
 date: '2026-05-27' # optional; defaults to the event date, used for ordering
 ---
 Optional longer notes (Markdown). Not rendered yet.
 ```
 
-Links are also exported at `/links.json` and as RSS at `/links.xml`.
+Projects are also exported at `/projects.json` and as RSS at `/projects.xml`.
 
 ## organizers/<slug>.md
 
@@ -106,11 +106,11 @@ photo: /images/organizers/alastair.jpg # optional, not rendered yet
 
 ## Where things render
 
-| Content     | Home                           | /events       | /events/[slug]              | /links          |
+| Content     | Home                           | /events       | /events/[slug]              | /projects       |
 | ----------- | ------------------------------ | ------------- | --------------------------- | --------------- |
 | next event  | hero                           | Upcoming grid | full page, "Next one" aside | event label     |
 | past events | 3 most recent + "earlier" card | Past grid     | full page                   | event label     |
-| links       | 6 most recent                  |               | links for that event        | table + filters |
+| projects    | 6 most recent                  |               | projects for that event     | table + filters |
 | organizers  | footer                         | footer        | footer                      | footer          |
 
 ## Components
@@ -118,7 +118,7 @@ photo: /images/organizers/alastair.jpg # optional, not rendered yet
 Reusable pieces live in `src/lib/components/` and are exported from
 `src/lib/components/index.ts`: `SiteHeader`, `SiteFooter`, `PageShell`, `Contour`,
 `Wordmark`, `SectionLabel`, `CtaLink`, `EventCover`, `EventCard`, `EventGrid`,
-`LinkRow`, `LinkCompactRow`, `LinkTable`, `LinkThumb`, `FilterChips`,
+`ProjectRow`, `ProjectCompactRow`, `ProjectTable`, `ProjectThumb`, `FilterChips`,
 `NewsletterForm`, `SpeakerRow`, `ScheduleRow`, `PhotoGrid`, `MetaList`.
 Design tokens (colours, fonts, the single 720px breakpoint) are defined in
 `src/routes/layout.css` under `@theme`.

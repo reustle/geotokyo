@@ -6,8 +6,8 @@
 import type {
 	Event,
 	EventFrontmatter,
-	Link,
-	LinkFrontmatter,
+	Project,
+	ProjectFrontmatter,
 	MarkdownModule,
 	Organizer,
 	OrganizerFrontmatter,
@@ -26,9 +26,12 @@ const eventModules = import.meta.glob<MarkdownModule<EventFrontmatter>>(
 	'/src/content/events/*.md',
 	{ eager: true }
 );
-const linkModules = import.meta.glob<MarkdownModule<LinkFrontmatter>>('/src/content/links/*.md', {
-	eager: true
-});
+const projectModules = import.meta.glob<MarkdownModule<ProjectFrontmatter>>(
+	'/src/content/projects/*.md',
+	{
+		eager: true
+	}
+);
 const organizerModules = import.meta.glob<MarkdownModule<OrganizerFrontmatter>>(
 	'/src/content/organizers/*.md',
 	{ eager: true }
@@ -70,9 +73,9 @@ function buildOrganizers(): Organizer[] {
 		.sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.name.localeCompare(b.name));
 }
 
-function buildLinks(events: Event[]): Link[] {
+function buildProjects(events: Event[]): Project[] {
 	const byNumber = new Map(events.map((e) => [e.number, e]));
-	return Object.entries(linkModules)
+	return Object.entries(projectModules)
 		.map(([path, mod]) => {
 			const fm = mod.metadata;
 			const ev = byNumber.get(fm.event);
@@ -87,7 +90,7 @@ function buildLinks(events: Event[]): Link[] {
 				eventColor: ev?.color ?? DEFAULT_COLOR,
 				eventSlug: ev?.slug,
 				body: mod.default
-			} satisfies Link;
+			} satisfies Project;
 		})
 		.sort(
 			(a, b) => b.date.localeCompare(a.date) || b.event - a.event || a.name.localeCompare(b.name)
@@ -97,7 +100,7 @@ function buildLinks(events: Event[]): Link[] {
 export const site: Site = buildSite();
 export const events: Event[] = buildEvents();
 export const organizers: Organizer[] = buildOrganizers();
-export const links: Link[] = buildLinks(events);
+export const projects: Project[] = buildProjects(events);
 
 /** Earliest event that has not happened yet, if any. */
 export const nextEvent: Event | undefined = [...events]
@@ -111,17 +114,17 @@ export function getEvent(slug: string): Event | undefined {
 	return events.find((e) => e.slug === slug);
 }
 
-export function linksForEvent(number: number): Link[] {
-	return links.filter((l) => l.event === number);
+export function projectsForEvent(number: number): Project[] {
+	return projects.filter((l) => l.event === number);
 }
 
-/** Distinct tags in the order they first appear (most recent links first). */
-export function linkTags(): string[] {
-	return [...new Set(links.map((l) => l.tag))];
+/** Distinct tags in the order they first appear (most recent projects first). */
+export function projectTags(): string[] {
+	return [...new Set(projects.map((l) => l.tag))];
 }
 
-/** `[{ event, count }]` for the links sidebar, most recent event first. */
-export function linkCountsByEvent(): {
+/** `[{ event, count }]` for the projects sidebar, most recent event first. */
+export function projectCountsByEvent(): {
 	event: Event | undefined;
 	label: string;
 	color: string;
@@ -129,12 +132,12 @@ export function linkCountsByEvent(): {
 	planned: boolean;
 }[] {
 	const counts = new Map<number, number>();
-	for (const l of links) counts.set(l.event, (counts.get(l.event) ?? 0) + 1);
+	for (const l of projects) counts.set(l.event, (counts.get(l.event) ?? 0) + 1);
 	return [...counts.entries()]
 		.sort((a, b) => b[0] - a[0])
 		.map(([number, count]) => {
 			const event = events.find((e) => e.number === number);
-			const sample = links.find((l) => l.event === number)!;
+			const sample = projects.find((l) => l.event === number)!;
 			return {
 				event,
 				label: sample.eventLabel,

@@ -1,42 +1,47 @@
 <script lang="ts">
 	import { pad2 } from '$lib/content/format';
-	import { FilterChips, LinkTable, PageShell, SectionLabel } from '$lib/components';
+	import { FilterChips, ProjectTable, PageShell, SectionLabel } from '$lib/components';
 
 	let { data } = $props();
 	let filter = $state('all');
 
-	const rows = $derived(filter === 'all' ? data.links : data.links.filter((l) => l.tag === filter));
+	const rows = $derived(
+		filter === 'all' ? data.projects : data.projects.filter((l) => l.tag === filter)
+	);
 
 	let submitUrl = $state('');
 	const issueHref = $derived(
-		`${data.site.githubUrl}/issues/new?title=${encodeURIComponent('Link: ' + submitUrl)}&body=${encodeURIComponent(
+		`${data.site.githubUrl}/issues/new?title=${encodeURIComponent('Project: ' + submitUrl)}&body=${encodeURIComponent(
 			`URL: ${submitUrl}\n\nOne-liner:\n\nEvent:\n`
 		)}`
 	);
-	function submitLink(e: SubmitEvent) {
+	function submitProject(e: SubmitEvent) {
 		e.preventDefault();
 		if (submitUrl) window.open(issueHref, '_blank', 'noopener');
 	}
 </script>
 
 <svelte:head>
-	<title>Links · {data.site.title}</title>
-	<meta name="description" content={data.site.linksIntro} />
+	<title>Projects · {data.site.title}</title>
+	<meta name="description" content={data.site.projectsIntro} />
 </svelte:head>
 
-<PageShell site={data.site} organizers={data.organizers} current="/links">
+<PageShell site={data.site} organizers={data.organizers} current="/projects">
 	<div class="flex flex-col gap-[18px] border-b border-rule px-5 pt-14 pb-8 md:px-10">
-		<div class="text-[11px] tracking-[.18em] text-accent">$ cat links.md</div>
+		<div class="text-[11px] tracking-[.18em] text-accent">$ cat projects.md</div>
 		<h1 class="m-0 max-w-[700px] text-[36px] leading-[1.15] font-light text-pretty">
-			{data.site.linksIntro}
+			{data.site.projectsIntro}
 		</h1>
-		<p class="m-0 max-w-[560px] text-[13px] leading-[1.7] text-muted">{data.site.linksBlurb}</p>
+		<p class="m-0 max-w-[560px] text-[13px] leading-[1.7] text-muted">{data.site.projectsBlurb}</p>
 		<FilterChips options={data.tags} bind:value={filter} />
 	</div>
 
 	<div class="grid min-h-[600px] md:grid-cols-[minmax(0,1fr)_300px]">
 		<div class="border-b border-rule md:border-r md:border-b-0">
-			<LinkTable links={rows} footer="{pad2(data.links.length)} links · showing {filter}" />
+			<ProjectTable
+				projects={rows}
+				footer="{pad2(data.projects.length)} projects · showing {filter}"
+			/>
 		</div>
 
 		<aside class="flex flex-col gap-6 p-5 text-[12px] leading-[1.6] md:p-7">
@@ -59,17 +64,17 @@
 			</div>
 
 			<div class="flex flex-col gap-2">
-				<SectionLabel label="Submit a link" class="text-[10px]" />
+				<SectionLabel label="Submit a project" class="text-[10px]" />
 				<p class="m-0 text-muted">
 					Presenting soon? Send the URL and a one-liner. It goes up with your talk.
 				</p>
-				<form onsubmit={submitLink} class="flex flex-col gap-[6px]">
+				<form onsubmit={submitProject} class="flex flex-col gap-[6px]">
 					<input
 						type="url"
 						required
 						bind:value={submitUrl}
 						placeholder="https://"
-						aria-label="Link URL"
+						aria-label="Project URL"
 						class="border border-rule-strong bg-transparent px-3 py-[10px] text-[12px] text-ink outline-none focus:border-ink"
 					/>
 					<button
@@ -85,8 +90,8 @@
 			<div class="mt-auto flex flex-col gap-2">
 				<SectionLabel label="Export" class="text-[10px]" />
 				<div class="flex gap-3">
-					<a href="/links.json" class="text-[12px]">links.json</a>
-					<a href="/links.xml" class="text-[12px]">RSS</a>
+					<a href="/projects.json" class="text-[12px]">projects.json</a>
+					<a href="/projects.xml" class="text-[12px]">RSS</a>
 				</div>
 			</div>
 		</aside>

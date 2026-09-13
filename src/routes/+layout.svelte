@@ -10,8 +10,8 @@
 	<link
 		rel="alternate"
 		type="application/rss+xml"
-		title="{data.site.title} links"
-		href="/links.xml"
+		title="{data.site.title} projects"
+		href="/projects.xml"
 	/>
 </svelte:head>
 

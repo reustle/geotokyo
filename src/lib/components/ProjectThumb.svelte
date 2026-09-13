@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { Link } from '$lib/content/types';
-	/** Thumbnail for a link; falls back to a labelled placeholder when no image is set. */
-	let { link, class: cls = '' }: { link: Link; class?: string } = $props();
+	import type { Project } from '$lib/content/types';
+	/** Thumbnail for a project; falls back to a labelled placeholder when no image is set. */
+	let { project, class: cls = '' }: { project: Project; class?: string } = $props();
 </script>
 
 <div class="relative overflow-hidden border border-rule bg-bg-deep {cls}">
-	{#if link.image}
+	{#if project.image}
 		<img
-			src={link.image}
+			src={project.image}
 			alt=""
 			class="absolute inset-0 h-full w-full object-cover"
 			loading="lazy"
@@ -16,7 +16,7 @@
 		<div
 			class="absolute inset-0 grid place-items-center p-2 text-center text-[10px] leading-[1.4] text-faint"
 		>
-			{link.host}
+			{project.host}
 		</div>
 	{/if}
 </div>

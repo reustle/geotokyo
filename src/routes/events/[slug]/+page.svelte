@@ -3,7 +3,7 @@
 	import {
 		CtaLink,
 		EventCover,
-		LinkCompactRow,
+		ProjectCompactRow,
 		MetaList,
 		NewsletterForm,
 		PageShell,
@@ -14,7 +14,7 @@
 	} from '$lib/components';
 
 	let { data } = $props();
-	const { event, eventLinks, nextEvent } = $derived(data);
+	const { event, eventProjects, nextEvent } = $derived(data);
 	const Body = $derived(event.body);
 
 	const meta = $derived([
@@ -94,18 +94,18 @@
 		</div>
 	{/if}
 
-	<!-- Links + next-event aside -->
+	<!-- Projects + next-event aside -->
 	<div class="grid md:grid-cols-[minmax(0,1fr)_380px]">
 		<div
 			class="flex flex-col gap-4 border-b border-rule px-5 py-7 md:border-r md:border-b-0 md:px-10 md:py-9"
 		>
 			<SectionLabel
-				label={event.upcoming ? 'Links queued for this event' : 'Links from this event'}
+				label={event.upcoming ? 'Projects queued for this event' : 'Projects from this event'}
 			>
-				{#snippet aside()}<a href="/links">all links →</a>{/snippet}
+				{#snippet aside()}<a href="/projects">all projects →</a>{/snippet}
 			</SectionLabel>
-			{#each eventLinks as link (link.id)}
-				<LinkCompactRow {link} />
+			{#each eventProjects as project (project.id)}
+				<ProjectCompactRow {project} />
 			{:else}
 				<p class="m-0 text-[12px] text-faint">Nothing here yet.</p>
 			{/each}

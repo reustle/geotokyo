@@ -19,8 +19,8 @@ export interface SiteFrontmatter {
 	lumaUrl: string;
 	githubUrl: string;
 	newsletterBlurb: string;
-	linksIntro: string;
-	linksBlurb: string;
+	projectsIntro: string;
+	projectsBlurb: string;
 	nav: NavItem[];
 }
 
@@ -95,26 +95,26 @@ export interface Event extends EventFrontmatter {
 	body: Component;
 }
 
-export type LinkStatus = 'discussed' | 'planned';
+export type ProjectStatus = 'discussed' | 'planned';
 
-/** `src/content/links/*.md` */
-export interface LinkFrontmatter {
+/** `src/content/projects/*.md` */
+export interface ProjectFrontmatter {
 	name: string;
 	url: string;
 	description: string;
 	tag: string;
-	/** Event number the link was shared at (or is planned for). */
+	/** Event number the project was shared at (or is planned for). */
 	event: number;
-	status?: LinkStatus;
+	status?: ProjectStatus;
 	image?: string;
 	/** Optional ISO date used for ordering; defaults to the event's date. */
 	date?: string;
 }
 
-export interface Link extends LinkFrontmatter {
+export interface Project extends ProjectFrontmatter {
 	id: string;
 	host: string;
-	status: LinkStatus;
+	status: ProjectStatus;
 	date: string;
 	/** `#8`, or the event's short name for upcoming events. */
 	eventLabel: string;

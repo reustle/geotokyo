@@ -4,14 +4,14 @@
 		Contour,
 		CtaLink,
 		EventGrid,
-		LinkRow,
+		ProjectRow,
 		SectionLabel,
 		SiteFooter,
 		SiteHeader
 	} from '$lib/components';
 
 	let { data } = $props();
-	const { site, organizers, nextEvent, pastEvents, recentPast, recentLinks, linkCount } =
+	const { site, organizers, nextEvent, pastEvents, recentPast, recentProjects, projectCount } =
 		$derived(data);
 
 	const earliest = $derived(pastEvents[pastEvents.length - 1]);
@@ -101,15 +101,15 @@
 		/>
 	</section>
 
-	<!-- Recent links -->
-	<section id="links" class="flex flex-col gap-2 px-5 pt-6 pb-8 md:px-12 md:pt-10 md:pb-14">
-		<SectionLabel label="Recent links · Maps, projects, posts" class="mb-3">
-			{#snippet aside()}{pad2(linkCount)} total{/snippet}
+	<!-- Recent projects -->
+	<section id="projects" class="flex flex-col gap-2 px-5 pt-6 pb-8 md:px-12 md:pt-10 md:pb-14">
+		<SectionLabel label="Recent projects · Maps, tools, posts" class="mb-3">
+			{#snippet aside()}{pad2(projectCount)} total{/snippet}
 		</SectionLabel>
-		{#each recentLinks as link (link.id)}
-			<LinkRow {link} />
+		{#each recentProjects as project (project.id)}
+			<ProjectRow {project} />
 		{/each}
-		<a href="/links" class="border-t border-rule pt-4 text-[12px]">All links →</a>
+		<a href="/projects" class="border-t border-rule pt-4 text-[12px]">All projects →</a>
 	</section>
 
 	<SiteFooter {site} {organizers} />
