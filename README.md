@@ -1,42 +1,35 @@
-# sv
+# Geo Tokyo site
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Website for Geo Tokyo, an irregular Tokyo mapping meetup. Built with SvelteKit 5,
+Tailwind CSS 4 and mdsvex, deployed to Cloudflare Workers.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
+## Develop
 
 ```sh
-# recreate this project
-pnpm dlx sv@0.17.0 create --template minimal --types ts --add prettier eslint vitest="usages:unit,component" tailwindcss="plugins:none" sveltekit-adapter="adapter:cloudflare+cfTarget:workers" mdsvex ai-tools="ide:claude-code,gemini+delivery:plugin+tools:mcp,svelte-code-writer,svelte-core-bestpractices,svelte-file-editor+mcpSetup:remote" --install pnpm geotokyo-site
+pnpm install
+pnpm dev        # http://localhost:5173
+pnpm check      # type-check
+pnpm lint       # prettier + eslint
+pnpm build      # prerender the site into .svelte-kit/cloudflare
+pnpm preview    # run the built worker locally
 ```
 
-## Developing
+## Content
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Events, links, organizers and site settings are Markdown files under
+`src/content/`; images live in `static/images/`. See [CONTENT.md](./CONTENT.md)
+for the frontmatter fields and where each piece renders.
 
-```sh
-npm run dev
+## Layout
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- `src/routes/` — pages: `/`, `/events`, `/events/[slug]`, `/links`, plus
+  `/links.json` and `/links.xml` exports.
+- `src/lib/components/` — reusable UI components.
+- `src/lib/content/` — content loader (`import.meta.glob` over the Markdown files),
+  types and date/URL formatting helpers.
+- `src/routes/layout.css` — Tailwind theme tokens from the design handoff.
 
-## Building
+## Not wired yet
 
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- Newsletter signup shows an inline confirmation but does not call a provider.
+- "Submit a link" opens a pre-filled GitHub issue.

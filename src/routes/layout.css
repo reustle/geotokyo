@@ -1,1 +1,111 @@
 @import 'tailwindcss';
+
+/* Design tokens from the Geo Tokyo design handoff. */
+@theme {
+	--breakpoint-*: initial;
+	--breakpoint-md: 720px;
+	--breakpoint-lg: 1000px;
+
+	--color-*: initial;
+	--color-transparent: transparent;
+	--color-current: currentColor;
+	--color-bg: #1e1c19;
+	--color-bg-deep: #1a1816;
+	--color-bg-hover: #23201c;
+	--color-canvas: #141311;
+	--color-ink: #e9e2d6;
+	--color-muted: #9a9184;
+	--color-faint: #6f675c;
+	--color-accent: #cf5a4e;
+	--color-accent-hover: #e58a80;
+	--color-rule: rgba(255, 240, 220, 0.1);
+	--color-rule-soft: rgba(255, 240, 220, 0.08);
+	--color-rule-mid: rgba(255, 240, 220, 0.15);
+	--color-rule-strong: rgba(255, 240, 220, 0.25);
+	--color-rule-heavy: rgba(255, 240, 220, 0.3);
+	--color-contour: rgba(233, 226, 214, 0.3);
+
+	--font-mono: 'DM Mono', ui-monospace, Menlo, monospace;
+	--font-display: Oswald, 'Arial Narrow', sans-serif;
+
+	--radius-*: initial;
+	--radius-none: 0;
+	--radius-full: 9999px;
+}
+
+@layer base {
+	html {
+		background: var(--color-bg);
+	}
+	body {
+		margin: 0;
+		background: var(--color-bg);
+		color: var(--color-ink);
+		font-family: var(--font-mono);
+		-webkit-font-smoothing: antialiased;
+	}
+	a {
+		color: var(--color-accent);
+		transition: color 140ms ease;
+	}
+	a:hover {
+		color: var(--color-accent-hover);
+	}
+	input::placeholder {
+		color: var(--color-faint);
+	}
+	button,
+	input {
+		font: inherit;
+	}
+}
+
+/* Small-caps eyebrow used for every section label. */
+@utility eyebrow {
+	font-size: 11px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--color-faint);
+}
+
+/* Markdown bodies rendered from content files. */
+.prose-geo {
+	font-size: 13px;
+	line-height: 1.7;
+	color: var(--color-muted);
+}
+.prose-geo > :first-child {
+	margin-top: 0;
+}
+.prose-geo > :last-child {
+	margin-bottom: 0;
+}
+.prose-geo p,
+.prose-geo ul,
+.prose-geo ol {
+	margin: 0 0 1em;
+}
+.prose-geo ul,
+.prose-geo ol {
+	padding-left: 1.4em;
+}
+.prose-geo strong {
+	color: var(--color-ink);
+	font-weight: 500;
+}
+.prose-geo h2,
+.prose-geo h3 {
+	font-weight: 400;
+	color: var(--color-ink);
+	font-size: 14px;
+	margin: 1.6em 0 0.6em;
+}
+.prose-geo code {
+	font-size: 12px;
+	border: 1px solid var(--color-rule-strong);
+	padding: 0 4px;
+}
+.prose-geo img {
+	max-width: 100%;
+	border: 1px solid var(--color-rule);
+}
