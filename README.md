@@ -16,14 +16,14 @@ pnpm preview    # run the built worker locally
 
 ## Content
 
-Events, projects, organizers and site settings are Markdown files under
+Events, Japanese maps, organizers and site settings are Markdown files under
 `src/content/`; images live in `static/images/`. See [CONTENT.md](./CONTENT.md)
 for the frontmatter fields and where each piece renders.
 
 ## Layout
 
-- `src/routes/` — pages: `/`, `/events`, `/events/[slug]`, `/projects`, plus
-  `/projects.json` and `/projects.xml` exports.
+- `src/routes/` — pages: `/`, `/meetups`, `/meetups/[slug]`, `/maps` (Japanese Maps), plus
+  `/maps.json` and `/maps.xml` exports.
 - `src/lib/components/` — reusable UI components.
 - `src/lib/content/` — content loader (`import.meta.glob` over the Markdown files),
   types and date/URL formatting helpers.

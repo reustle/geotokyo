@@ -3,18 +3,19 @@
 	import {
 		CtaLink,
 		EventCover,
-		ProjectCompactRow,
+		MapCompactRow,
 		MetaList,
 		NewsletterForm,
 		PageShell,
 		PhotoGrid,
+		PresentedProjectRow,
 		ScheduleRow,
 		SectionLabel,
 		SpeakerRow
 	} from '$lib/components';
 
 	let { data } = $props();
-	const { event, eventProjects, nextEvent } = $derived(data);
+	const { event, eventMaps, nextEvent } = $derived(data);
 	const Body = $derived(event.body);
 
 	const meta = $derived([
@@ -31,11 +32,11 @@
 </script>
 
 <svelte:head>
-	<title>{event.title} · {data.site.title}</title>
+	<title>{event.title}{event.subtitle ? ` ${event.subtitle}` : ''} · {data.site.title}</title>
 	{#if event.highlight}<meta name="description" content={event.highlight} />{/if}
 </svelte:head>
 
-<PageShell site={data.site} organizers={data.organizers} current="/events">
+<PageShell site={data.site} organizers={data.organizers} current="/meetups">
 	<!-- Cover + summary -->
 	<div class="grid border-b border-rule md:grid-cols-[minmax(0,1fr)_380px]">
 		<div class="border-b border-rule md:border-r md:border-b-0">
@@ -48,10 +49,13 @@
 		</div>
 		<div class="flex flex-col gap-[18px] p-5 md:p-8">
 			<div class="eyebrow">
-				<a href="/events" class="text-muted no-underline hover:text-accent-hover">← events</a>
+				<a href="/meetups" class="text-muted no-underline hover:text-accent-hover">← meetups</a>
 				· {event.upcoming ? 'Upcoming' : 'Past'}
 			</div>
-			<h1 class="m-0 text-[28px] leading-[1.2] font-light">{event.title}</h1>
+			<h1 class="m-0 text-[28px] leading-[1.2] font-light">
+				{event.title}
+				{#if event.subtitle}<span class="block text-[20px] text-muted">{event.subtitle}</span>{/if}
+			</h1>
 			<MetaList rows={meta} />
 			<div class="prose-geo mt-auto"><Body /></div>
 			{#if event.upcoming && event.lumaUrl}
@@ -94,27 +98,37 @@
 		</div>
 	{/if}
 
-	<!-- Projects + next-event aside -->
+	<!-- Presented projects + Japanese maps discussed, with next-event aside -->
 	<div class="grid md:grid-cols-[minmax(0,1fr)_380px]">
-		<div
-			class="flex flex-col gap-4 border-b border-rule px-5 py-7 md:border-r md:border-b-0 md:px-10 md:py-9"
-		>
-			<SectionLabel
-				label={event.upcoming ? 'Projects queued for this event' : 'Projects from this event'}
-			>
-				{#snippet aside()}<a href="/projects">all projects →</a>{/snippet}
-			</SectionLabel>
-			{#each eventProjects as project (project.id)}
-				<ProjectCompactRow {project} />
-			{:else}
-				<p class="m-0 text-[12px] text-faint">Nothing here yet.</p>
-			{/each}
+		<div class="flex flex-col border-b border-rule md:border-r md:border-b-0">
+			<div class="flex flex-col gap-4 border-b border-rule px-5 py-7 md:px-10 md:py-9">
+				<SectionLabel label={event.upcoming ? 'Projects to be presented' : 'Projects presented'} />
+				{#each event.projects as project (project.name)}
+					<PresentedProjectRow {project} />
+				{:else}
+					<p class="m-0 text-[12px] text-faint">
+						{event.upcoming ? 'Line-up to be announced.' : 'Nothing recorded yet.'}
+					</p>
+				{/each}
+			</div>
+			<div class="flex flex-col gap-4 px-5 py-7 md:px-10 md:py-9">
+				<SectionLabel
+					label={event.upcoming ? 'Japanese maps on the agenda' : 'Japanese maps discussed'}
+				>
+					{#snippet aside()}<a href="/maps">all Japanese maps →</a>{/snippet}
+				</SectionLabel>
+				{#each eventMaps as entry (entry.id)}
+					<MapCompactRow {entry} />
+				{:else}
+					<p class="m-0 text-[12px] text-faint">Nothing here yet.</p>
+				{/each}
+			</div>
 		</div>
 		<div class="flex flex-col gap-[14px] px-5 py-7 md:px-8 md:py-9">
 			{#if nextEvent}
 				<SectionLabel label="Next one" />
 				<div class="text-[16px] leading-[1.4]">
-					{nextEvent.shortName ?? nextEvent.title} · {formatShort(nextEvent.date)}<br />
+					{nextEvent.subtitle ?? nextEvent.title} · {formatShort(nextEvent.date)}<br />
 					<span class="text-[13px] text-muted">{nextEvent.venue}</span>
 				</div>
 				{#if nextEvent.lumaUrl}

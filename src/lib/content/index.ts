@@ -6,8 +6,8 @@
 import type {
 	Event,
 	EventFrontmatter,
-	Project,
-	ProjectFrontmatter,
+	JapaneseMap,
+	MapFrontmatter,
 	MarkdownModule,
 	Organizer,
 	OrganizerFrontmatter,
@@ -23,19 +23,23 @@ const siteModules = import.meta.glob<MarkdownModule<SiteFrontmatter>>('/src/cont
 	eager: true
 });
 const eventModules = import.meta.glob<MarkdownModule<EventFrontmatter>>(
-	'/src/content/events/*.md',
+	'/src/content/meetups/*.md',
 	{ eager: true }
 );
-const projectModules = import.meta.glob<MarkdownModule<ProjectFrontmatter>>(
-	'/src/content/projects/*.md',
-	{
-		eager: true
-	}
-);
+const mapModules = import.meta.glob<MarkdownModule<MapFrontmatter>>('/src/content/maps/*.md', {
+	eager: true
+});
 const organizerModules = import.meta.glob<MarkdownModule<OrganizerFrontmatter>>(
 	'/src/content/organizers/*.md',
 	{ eager: true }
 );
+
+function normaliseTags(tags?: string[], tag?: string): string[] {
+	const list = (tags ?? (tag ? [tag] : []))
+		.map((t) => String(t).trim().toLowerCase())
+		.filter(Boolean);
+	return list.length ? [...new Set(list)] : ['misc'];
+}
 
 function slugOf(path: string): string {
 	return path.split('/').pop()!.replace(/\.md$/, '');
@@ -61,6 +65,7 @@ function buildEvents(): Event[] {
 				ink: fm.ink ?? DEFAULT_INK,
 				label: `#${fm.number}`,
 				upcoming: date >= today,
+				projects: (fm.projects ?? []).map((p) => ({ ...p, host: p.url ? hostOf(p.url) : '' })),
 				body: mod.default
 			} satisfies Event;
 		})
@@ -73,9 +78,9 @@ function buildOrganizers(): Organizer[] {
 		.sort((a, b) => (a.order ?? 99) - (b.order ?? 99) || a.name.localeCompare(b.name));
 }
 
-function buildProjects(events: Event[]): Project[] {
+function buildMaps(events: Event[]): JapaneseMap[] {
 	const byNumber = new Map(events.map((e) => [e.number, e]));
-	return Object.entries(projectModules)
+	return Object.entries(mapModules)
 		.map(([path, mod]) => {
 			const fm = mod.metadata;
 			const ev = byNumber.get(fm.event);
@@ -85,12 +90,13 @@ function buildProjects(events: Event[]): Project[] {
 				status,
 				id: slugOf(path),
 				host: hostOf(fm.url),
+				tags: normaliseTags(fm.tags, fm.tag),
 				date: fm.date ? toIsoDate(fm.date) : (ev?.date ?? ''),
-				eventLabel: ev ? (ev.upcoming && ev.shortName ? ev.shortName : ev.label) : `#${fm.event}`,
+				eventLabel: ev ? (ev.upcoming && ev.subtitle ? ev.subtitle : ev.label) : `#${fm.event}`,
 				eventColor: ev?.color ?? DEFAULT_COLOR,
 				eventSlug: ev?.slug,
 				body: mod.default
-			} satisfies Project;
+			} satisfies JapaneseMap;
 		})
 		.sort(
 			(a, b) => b.date.localeCompare(a.date) || b.event - a.event || a.name.localeCompare(b.name)
@@ -100,7 +106,7 @@ function buildProjects(events: Event[]): Project[] {
 export const site: Site = buildSite();
 export const events: Event[] = buildEvents();
 export const organizers: Organizer[] = buildOrganizers();
-export const projects: Project[] = buildProjects(events);
+export const maps: JapaneseMap[] = buildMaps(events);
 
 /** Earliest event that has not happened yet, if any. */
 export const nextEvent: Event | undefined = [...events]
@@ -114,36 +120,16 @@ export function getEvent(slug: string): Event | undefined {
 	return events.find((e) => e.slug === slug);
 }
 
-export function projectsForEvent(number: number): Project[] {
-	return projects.filter((l) => l.event === number);
+/**
+ * Japanese maps discussed at an event: entries tagged with the event number,
+ * plus any ids listed in the event's `maps:` frontmatter.
+ */
+export function mapsForEvent(event: Event): JapaneseMap[] {
+	const ids = new Set(event.maps ?? []);
+	return maps.filter((m) => m.event === event.number || ids.has(m.id));
 }
 
-/** Distinct tags in the order they first appear (most recent projects first). */
-export function projectTags(): string[] {
-	return [...new Set(projects.map((l) => l.tag))];
-}
-
-/** `[{ event, count }]` for the projects sidebar, most recent event first. */
-export function projectCountsByEvent(): {
-	event: Event | undefined;
-	label: string;
-	color: string;
-	count: number;
-	planned: boolean;
-}[] {
-	const counts = new Map<number, number>();
-	for (const l of projects) counts.set(l.event, (counts.get(l.event) ?? 0) + 1);
-	return [...counts.entries()]
-		.sort((a, b) => b[0] - a[0])
-		.map(([number, count]) => {
-			const event = events.find((e) => e.number === number);
-			const sample = projects.find((l) => l.event === number)!;
-			return {
-				event,
-				label: sample.eventLabel,
-				color: sample.eventColor,
-				count,
-				planned: event?.upcoming ?? false
-			};
-		});
+/** Distinct tags, alphabetical, across every entry. */
+export function mapTags(): string[] {
+	return [...new Set(maps.flatMap((m) => m.tags))].sort();
 }

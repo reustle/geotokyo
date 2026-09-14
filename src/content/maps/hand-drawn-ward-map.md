@@ -1,8 +1,8 @@
 ---
 name: '[placeholder] Hand-drawn Tokyo ward map'
 url: '#'
-description: 'Speaker project from #7 — link TBD.'
-tag: map
+description: 'Speaker map from #7 — link TBD.'
+tags: [cartography, tokyo]
 event: 7
 status: discussed
 ---

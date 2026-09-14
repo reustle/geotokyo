@@ -14,7 +14,7 @@
 </script>
 
 <div class="mx-auto flex min-h-screen max-w-[1400px] flex-col">
-	<SiteHeader nav={site.nav} coordinates={site.coordinates} {current} />
+	<SiteHeader nav={site.nav} {current} />
 	{@render children()}
 	<SiteFooter {site} {organizers} />
 </div>

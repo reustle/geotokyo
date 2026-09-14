@@ -1,7 +1,7 @@
 ---
 number: 9
-title: 'Geo Tokyo Meetup : Summer 2026'
-shortName: Summer 2026
+title: Geo Tokyo Meetup
+subtitle: Summer 2026
 date: '2026-09-17'
 startTime: '18:00'
 endTime: '20:00'
@@ -27,6 +27,11 @@ schedule:
   - { time: '19:00', what: 'Talk 2' }
   - { time: '19:30', what: 'Lightning talks' }
   - { time: '19:50', what: 'Networking until FabCafe kicks us out' }
+projects:
+  - name: DuckDB spatial
+    url: https://duckdb.org
+    by: '[placeholder]'
+    description: Spatial SQL on local files, fast.
 ---
 
 Our ninth meetup. Two talks, a round of lightning demos, and time to compare maps over drinks. RSVP on Luma so we know how many chairs to borrow.

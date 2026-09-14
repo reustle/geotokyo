@@ -1,29 +1,27 @@
 <script lang="ts">
-	/** Stacked GEO / TOKYO wordmark in Oswald. */
+	/**
+	 * GEO / TOKYO text lockup in Oswald. Always two rows, left aligned.
+	 * Renders as a link to `/` unless `href` is null (e.g. inside another link).
+	 */
 	let {
-		variant = 'header',
+		size = 'md',
 		href = '/',
 		class: cls = ''
-	}: { variant?: 'header' | 'footer' | 'cover'; href?: string | null; class?: string } = $props();
+	}: { size?: 'sm' | 'md' | 'lg'; href?: string | null; class?: string } = $props();
 
 	const sizes = {
-		header: 'text-[22px] tracking-[.02em] text-center',
-		footer: 'text-[28px]',
-		cover: 'text-[14px]'
+		sm: 'text-[14px]',
+		md: 'text-[22px] tracking-[.02em]',
+		lg: 'text-[28px] tracking-[.02em]'
 	} as const;
+
+	const base = 'inline-block text-left font-display leading-[.9] font-semibold';
 </script>
 
 {#if href}
-	<a
-		{href}
-		class="font-display leading-[.9] font-semibold text-ink no-underline hover:text-ink {sizes[
-			variant
-		]} {cls}"
+	<a {href} class="{base} text-ink no-underline hover:text-ink {sizes[size]} {cls}"
+		>GEO<br />TOKYO</a
 	>
-		{#if variant === 'footer'}GEO<br />TO<br />KYO{:else}GEO<br />TOKYO{/if}
-	</a>
 {:else}
-	<span class="font-display leading-[.9] font-semibold {sizes[variant]} {cls}">
-		{#if variant === 'footer'}GEO<br />TO<br />KYO{:else}GEO<br />TOKYO{/if}
-	</span>
+	<span class="{base} {sizes[size]} {cls}">GEO<br />TOKYO</span>
 {/if}

@@ -8,6 +8,8 @@ export interface MarkdownModule<T> {
 
 export interface NavItem {
 	label: string;
+	/** Shorter label used on narrow screens, e.g. "JP Maps". */
+	short?: string;
 	href: string;
 }
 
@@ -19,8 +21,8 @@ export interface SiteFrontmatter {
 	lumaUrl: string;
 	githubUrl: string;
 	newsletterBlurb: string;
-	projectsIntro: string;
-	projectsBlurb: string;
+	mapsIntro: string;
+	mapsBlurb: string;
 	nav: NavItem[];
 }
 
@@ -59,12 +61,25 @@ export interface Photo {
 	alt?: string;
 }
 
-/** `src/content/events/*.md` */
+/** A project presented at an event, written inline in the event file. */
+export interface PresentedProject {
+	name: string;
+	url?: string;
+	/** Who presented it. */
+	by?: string;
+	description?: string;
+}
+
+export interface PresentedProjectResolved extends PresentedProject {
+	host: string;
+}
+
+/** `src/content/meetups/*.md` */
 export interface EventFrontmatter {
 	number: number;
 	title: string;
-	/** Short name used where `#N` is not descriptive enough, e.g. "Summer 2026". */
-	shortName?: string;
+	/** Shown under the title, e.g. "Summer 2026". Also labels upcoming events on /maps. */
+	subtitle?: string;
 	/** ISO date, quoted in YAML: "2026-09-17" */
 	date: string;
 	startTime?: string;
@@ -82,6 +97,10 @@ export interface EventFrontmatter {
 	speakers?: Speaker[];
 	schedule?: ScheduleItem[];
 	photos?: Photo[];
+	/** Projects presented at this event. */
+	projects?: PresentedProject[];
+	/** Ids of Japanese map entries (filenames in src/content/maps) discussed at this event. */
+	maps?: string[];
 }
 
 export interface Event extends EventFrontmatter {
@@ -92,29 +111,34 @@ export interface Event extends EventFrontmatter {
 	label: string;
 	/** True when the date is today or in the future (evaluated at build time). */
 	upcoming: boolean;
+	projects: PresentedProjectResolved[];
 	body: Component;
 }
 
-export type ProjectStatus = 'discussed' | 'planned';
+export type MapStatus = 'discussed' | 'planned';
 
-/** `src/content/projects/*.md` */
-export interface ProjectFrontmatter {
+/** `src/content/maps/*.md` — a Japanese mapping / geo project, dataset, map or post. */
+export interface MapFrontmatter {
 	name: string;
 	url: string;
 	description: string;
-	tag: string;
-	/** Event number the project was shared at (or is planned for). */
+	/** One or more tags; these become the filter chips on /maps. `tag: data` (single) also works. */
+	tags?: string[];
+	tag?: string;
+	/** Event number the entry was shared at (or is planned for). */
 	event: number;
-	status?: ProjectStatus;
+	status?: MapStatus;
 	image?: string;
 	/** Optional ISO date used for ordering; defaults to the event's date. */
 	date?: string;
 }
 
-export interface Project extends ProjectFrontmatter {
+export interface JapaneseMap extends MapFrontmatter {
 	id: string;
 	host: string;
-	status: ProjectStatus;
+	/** Normalised tag list (never empty; falls back to "misc"). */
+	tags: string[];
+	status: MapStatus;
 	date: string;
 	/** `#8`, or the event's short name for upcoming events. */
 	eventLabel: string;

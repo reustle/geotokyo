@@ -12,7 +12,7 @@
 		class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-x-12 gap-y-9 px-5 py-7 md:px-12 md:py-11"
 	>
 		<div class="flex flex-col gap-[14px]">
-			<Wordmark variant="footer" />
+			<Wordmark size="lg" />
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -- author-controlled content -->
 			<span class="text-[12px] leading-[1.7] text-muted">{@html site.tagline}</span>
 		</div>

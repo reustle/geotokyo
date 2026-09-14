@@ -6,11 +6,14 @@
 </script>
 
 <a
-	href="/events/{event.slug}"
+	href="/meetups/{event.slug}"
 	class="flex flex-col gap-[10px] text-ink no-underline hover:text-accent-hover"
 >
 	<EventCover {event} />
-	<div class="text-[13px] leading-[1.4]">{event.title}</div>
+	<div class="flex flex-col gap-[2px] text-[13px] leading-[1.4]">
+		<span>{event.title}</span>
+		{#if event.subtitle}<span class="text-muted">{event.subtitle}</span>{/if}
+	</div>
 	{#if event.highlight}
 		<div class="text-[11px] leading-[1.5] text-muted">{event.highlight}</div>
 	{/if}

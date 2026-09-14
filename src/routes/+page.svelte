@@ -4,14 +4,14 @@
 		Contour,
 		CtaLink,
 		EventGrid,
-		ProjectRow,
+		MapRow,
 		SectionLabel,
 		SiteFooter,
 		SiteHeader
 	} from '$lib/components';
 
 	let { data } = $props();
-	const { site, organizers, nextEvent, pastEvents, recentPast, recentProjects, projectCount } =
+	const { site, organizers, nextEvent, pastEvents, recentPast, recentMaps, mapCount } =
 		$derived(data);
 
 	const earliest = $derived(pastEvents[pastEvents.length - 1]);
@@ -40,21 +40,25 @@
 			style="background:linear-gradient(to top,#1e1c19 0%,rgba(30,28,25,.65) 42%,transparent 78%)"
 		></div>
 
-		<SiteHeader nav={site.nav} coordinates={site.coordinates} overlay />
+		<SiteHeader nav={site.nav} overlay />
 
 		<div
 			class="relative mt-auto flex flex-wrap items-end justify-between gap-x-10 gap-y-6 px-5 pb-7 md:px-12 md:pb-12"
 		>
 			{#if nextEvent}
 				<div class="flex min-w-0 flex-[1_1_480px] flex-col gap-[14px]">
-					<div class="text-[11px] tracking-[.18em] text-accent">
-						● NEXT MEETUP · {nextEvent.label}
-					</div>
 					<a
-						href="/events/{nextEvent.slug}"
-						class="text-[clamp(30px,4.2vw,46px)] leading-[1.1] font-light text-balance text-ink no-underline hover:text-accent-hover"
+						href="/meetups/{nextEvent.slug}"
+						class="flex flex-col gap-2 text-ink no-underline hover:text-accent-hover"
 					>
-						{nextEvent.title}
+						<span class="text-[clamp(30px,4.2vw,46px)] leading-[1.1] font-light text-balance">
+							{nextEvent.title}
+						</span>
+						{#if nextEvent.subtitle}
+							<span class="text-[clamp(18px,2.4vw,26px)] leading-[1.2] font-light text-muted">
+								{nextEvent.subtitle}
+							</span>
+						{/if}
 					</a>
 					<div class="flex flex-wrap gap-x-7 gap-y-[10px] text-[13px] leading-[1.7] text-muted">
 						<span>
@@ -75,7 +79,6 @@
 				{/if}
 			{:else}
 				<div class="flex min-w-0 flex-[1_1_480px] flex-col gap-[14px]">
-					<div class="text-[11px] tracking-[.18em] text-accent">● NEXT MEETUP · TBA</div>
 					<div class="text-[clamp(30px,4.2vw,46px)] leading-[1.1] font-light text-balance">
 						The next Geo Tokyo meetup isn't scheduled yet.
 					</div>
@@ -86,30 +89,30 @@
 		</div>
 	</div>
 
-	<!-- Past events -->
+	<!-- Past meetups -->
 	<section
 		id="events"
 		class="flex flex-col gap-[18px] border-b border-rule px-5 py-6 md:px-12 md:py-8"
 	>
-		<SectionLabel label="Past events · {pad2(pastEvents.length)}">
-			{#snippet aside()}<a href="/events">all →</a>{/snippet}
+		<SectionLabel label="Past meetups · {pad2(pastEvents.length)}">
+			{#snippet aside()}<a href="/meetups">all →</a>{/snippet}
 		</SectionLabel>
 		<EventGrid
 			events={recentPast}
-			earlierHref={firstHidden ? '/events' : undefined}
+			earlierHref={firstHidden ? '/meetups' : undefined}
 			{earlierRange}
 		/>
 	</section>
 
-	<!-- Recent projects -->
-	<section id="projects" class="flex flex-col gap-2 px-5 pt-6 pb-8 md:px-12 md:pt-10 md:pb-14">
-		<SectionLabel label="Recent projects · Maps, tools, posts" class="mb-3">
-			{#snippet aside()}{pad2(projectCount)} total{/snippet}
+	<!-- Recent Japanese maps -->
+	<section id="maps" class="flex flex-col gap-2 px-5 pt-6 pb-8 md:px-12 md:pt-10 md:pb-14">
+		<SectionLabel label="Recent Japanese maps · Data, tools, cartography" class="mb-3">
+			{#snippet aside()}{pad2(mapCount)} total{/snippet}
 		</SectionLabel>
-		{#each recentProjects as project (project.id)}
-			<ProjectRow {project} />
+		{#each recentMaps as entry (entry.id)}
+			<MapRow {entry} />
 		{/each}
-		<a href="/projects" class="border-t border-rule pt-4 text-[12px]">All projects →</a>
+		<a href="/maps" class="border-t border-rule pt-4 text-[12px]">All Japanese maps →</a>
 	</section>
 
 	<SiteFooter {site} {organizers} />

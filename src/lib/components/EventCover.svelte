@@ -22,7 +22,7 @@
 		{#if event.cover}
 			<img src={event.cover} alt="" class="absolute inset-0 h-full w-full object-cover" />
 		{/if}
-		<Wordmark variant="cover" href={null} class="relative" />
+		<Wordmark size="sm" href={null} class="relative" />
 		<span class="relative">{event.label}</span>
 	</div>
 {:else}
