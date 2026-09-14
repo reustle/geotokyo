@@ -4,7 +4,8 @@ All site content lives in Markdown files under `src/content/`. Each file has YAM
 frontmatter (the block between `---` lines) plus an optional Markdown body.
 Images go in `static/images/` and are referenced by absolute path (`/images/...`).
 
-The site is prerendered, so after editing content run `pnpm build` and deploy.
+The site is prerendered, so content changes go live on the next build and deploy
+(automatic if Coolify's deploy-on-push is enabled).
 "Next meetup" is whichever event has the earliest date that is today or later,
 evaluated at build time, so rebuild after an event has passed.
 

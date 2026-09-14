@@ -10,13 +10,11 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"moduleResolution": "bundler",
-		"types": ["./worker-configuration.d.ts"]
+		"moduleResolution": "bundler"
 	},
 	"exclude": [
 		"node_modules/**",
 		".svelte-kit/output/**",
-		".svelte-kit/cloudflare/**",
 		"src/service-worker*",
 		"src/service-worker/**"
 	]
