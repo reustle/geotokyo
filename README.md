@@ -17,8 +17,9 @@ pnpm preview    # serve ./build locally on http://localhost:4173
 
 ## Deploy (Coolify)
 
-The repo ships a `Dockerfile` that builds the site and serves `./build` with nginx
-on port 80. In Coolify:
+Two build packs are supported; pick one in Coolify.
+
+**Dockerfile** (recommended): builds the site and serves `./build` with nginx.
 
 1. New resource → Application → pick this Git repository and the `main` branch.
 2. Build pack: **Dockerfile** (leave the Dockerfile location as `/Dockerfile`).
@@ -27,6 +28,13 @@ on port 80. In Coolify:
    It is only used for absolute links in the RSS feed.
 5. Set the domain, deploy, and enable automatic deploys on push if you want
    content edits to go live on their own.
+
+**Nixpacks**: uses `nixpacks.toml`, which installs with pnpm, runs `pnpm build`,
+and starts `pnpm start` (the `serve` package serving `./build`).
+
+1. Build pack: **Nixpacks**. Port: `3000`.
+2. Environment variables: `SITE_ORIGIN` (build time) and optionally `PORT`.
+3. Deploy as above.
 
 To test the image locally:
 

@@ -15,7 +15,10 @@ lumaUrl: https://luma.com/r4k3o638
 schedule:
   - { time: '17:30', what: 'Doors open' }
   - { time: '18:00', what: 'Discuss and demo interesting projects from Tokyo and globally' }
-  - { time: '18:30', what: 'Round table: what people are building, demos, and what you want from future meetups' }
+  - {
+      time: '18:30',
+      what: 'Round table: what people are building, demos, and what you want from future meetups'
+    }
   - { time: '19:00', what: 'Networking' }
   - { time: '20:00', what: 'Doors close' }
 ---

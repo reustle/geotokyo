@@ -1,0 +1,22 @@
+# Nixpacks config for Coolify (build pack: Nixpacks).
+# Builds the prerendered site into ./build and serves it with `serve`.
+# Set SITE_ORIGIN as a build-time env var so RSS links use the public URL.
+
+providers = ["node"]
+
+[variables]
+NIXPACKS_NODE_VERSION = "24"
+NODE_ENV = "production"
+
+[phases.install]
+cmds = [
+  "corepack enable",
+  "corepack prepare pnpm@11.2.2 --activate",
+  "pnpm install --frozen-lockfile"
+]
+
+[phases.build]
+cmds = ["pnpm build"]
+
+[start]
+cmd = "pnpm start"

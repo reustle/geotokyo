@@ -14,7 +14,11 @@
 			{#if row.snippet}
 				{@render row.snippet()}
 			{:else if row.href}
-				<a href={row.href} target={/^https?:\/\//.test(row.href) ? '_blank' : undefined} rel="noopener">{row.value}</a>
+				<a
+					href={row.href}
+					target={/^https?:\/\//.test(row.href) ? '_blank' : undefined}
+					rel="noopener">{row.value}</a
+				>
 			{:else if Array.isArray(row.value)}
 				{#each row.value as line, i (i)}{line}{#if i < row.value.length - 1}<br />{/if}{/each}
 			{:else}
