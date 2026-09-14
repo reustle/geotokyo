@@ -93,6 +93,8 @@ export interface EventFrontmatter {
 	/** One-line summary used on cards. */
 	highlight?: string;
 	lumaUrl?: string;
+	/** Meetup.com page for the older events (2020–2022). */
+	meetupUrl?: string;
 	cover?: string;
 	speakers?: Speaker[];
 	schedule?: ScheduleItem[];

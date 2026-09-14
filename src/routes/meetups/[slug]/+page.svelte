@@ -27,6 +27,9 @@
 		...(event.hosts?.length ? [{ term: 'hosts', value: event.hosts.join(', ') }] : []),
 		...(event.lumaUrl
 			? [{ term: 'luma', value: event.lumaUrl.replace(/^https?:\/\//, ''), href: event.lumaUrl }]
+			: []),
+		...(event.meetupUrl
+			? [{ term: 'meetup', value: 'meetup.com/geotokyo', href: event.meetupUrl }]
 			: [])
 	]);
 </script>

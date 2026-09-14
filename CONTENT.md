@@ -60,6 +60,7 @@ color: '#f9a03f' # optional cover colour (default: accent red)
 ink: '#1e1c19' # optional text colour on the cover
 highlight: One-line summary for cards. # optional
 lumaUrl: https://luma.com/xxxx # optional; enables the RSVP button
+meetupUrl: https://www.meetup.com/geotokyo/events/xxxx/ # optional; older events hosted on Meetup.com
 cover: /images/meetups/summer-2026/cover.svg # optional logo shown in the cover block
 speakers: # optional
   - name: Speaker One

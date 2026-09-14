@@ -1,6 +1,6 @@
 ---
 title: Geo Tokyo
-tagline: Tokyo mapping meetup.<br>Irregular since 2025.
+tagline: Tokyo mapping meetup.<br>Irregular since 2020.
 coordinates: 35.6595°N 139.7005°E
 lumaUrl: https://luma.com/tokyotech
 githubUrl: https://github.com/liquidx/geotokyo-site
