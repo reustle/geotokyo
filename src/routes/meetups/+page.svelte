@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { pad2 } from '$lib/content/format';
-	import { EventGrid, PageShell, SectionLabel } from '$lib/components';
+	import { EventGrid, PageShell, SectionLabel, SeoMeta } from '$lib/components';
 
 	let { data } = $props();
 </script>
 
-<svelte:head>
-	<title>Meetups · {data.site.title}</title>
-</svelte:head>
+<SeoMeta
+	title="Meetups · {data.site.title}"
+	siteName={data.site.title}
+	description="Every Geo Tokyo meetup so far, and the next one. {data.site.description}"
+/>
 
 <PageShell site={data.site} organizers={data.organizers} current="/meetups">
 	<div class="flex flex-col gap-[18px] border-b border-rule px-5 pt-14 pb-8 md:px-10">

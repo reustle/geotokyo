@@ -29,6 +29,7 @@ static/images/
 ```yaml
 ---
 title: Geo Tokyo
+description: Geo Tokyo is an irregular Tokyo meetup for map enthusiasts… # page description + social preview text
 tagline: Tokyo mapping meetup.<br>Irregular since 2025. # footer, HTML allowed
 coordinates: 35.6595°N 139.7005°E
 lumaUrl: https://luma.com/tokyotech
@@ -98,10 +99,20 @@ date: '2026-05-27' # when it was found or shared; if omitted, taken from the eve
 event: 8 # optional; event number where it was first shared (or is planned for)
 status: discussed # discussed | planned (defaults from the event date)
 image: /images/maps/kokudo-suuchi.png # optional thumbnail (3:2 at 120px wide on desktop, 1:1 at 64px on mobile)
+addedBy: Alastair Tse # optional; who added the link (exported in /maps.json, not rendered yet)
 date: '2026-05-27' # optional; defaults to the event date, used for ordering
 ---
 Optional longer notes (Markdown). Not rendered yet.
 ```
+
+### Adding a link with Claude Code
+
+The `add-map-link` skill (`.claude/skills/add-map-link/`) does all of this for you: give
+Claude Code a URL ("add this to map links for the next meetup") and it fetches the title,
+description and thumbnail, writes the entry as `status: planned` for the next meetup, and
+runs the build to check it. You can also give it your own description to use instead of
+the page's, and say who added it (defaults to your git `user.name`), e.g.
+"add https://example.com for the next meetup, description: …, added by Shane Reustle". `npm run link-meta -- <url>` prints the metadata it starts from.
 
 ### Thumbnails
 
@@ -119,6 +130,20 @@ The script reads each entry's `url`, takes `og:image` (or `twitter:image`), save
 `static/images/maps/` and writes `image:` into the frontmatter. Sites that hide
 Open Graph tags from scripts (X/Twitter, Instagram, Facebook) will fail; add those by hand.
 Images are saved as-is, so check the file sizes and resize large ones before committing.
+
+To set a thumbnail by hand (or with the `set-map-thumbnail` Claude Code skill):
+
+```sh
+npm run set-thumbnail -- <id> screenshot             # headless Chrome screenshot of the entry's url
+npm run set-thumbnail -- <id> screenshot --wait=8000 --selector=canvas
+npm run set-thumbnail -- <id> clipboard              # image you copied (e.g. ⌃⇧⌘4)
+npm run set-thumbnail -- <id> ~/Desktop/shot.png     # local file
+npm run set-thumbnail -- <id> https://…/image.jpg    # image URL
+```
+
+It resizes to ≤1200px wide, saves JPEG for screenshots, and updates `image:` for you.
+Or do it manually: put the file at `static/images/maps/<id>.<ext>` and add
+`image: /images/maps/<id>.<ext>` to the entry.
 
 Tags are limited to the ten above; each becomes a filter chip on /maps, and the build warns about any other tag.
 

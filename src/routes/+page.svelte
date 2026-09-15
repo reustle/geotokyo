@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { NEWSLETTER_ENABLED } from '$lib/config';
-	import { formatShort, pad2, timeRange } from '$lib/content/format';
+	import { formatLong, formatShort, pad2, timeRange } from '$lib/content/format';
 	import {
 		Contour,
 		CtaLink,
 		EventGrid,
 		MapRow,
 		SectionLabel,
+		SeoMeta,
 		SiteFooter,
 		SiteHeader
 	} from '$lib/components';
@@ -22,10 +23,13 @@
 	);
 </script>
 
-<svelte:head>
-	<title>{site.title}</title>
-	<meta name="description" content="Tokyo mapping meetup. Irregular since 2025." />
-</svelte:head>
+<SeoMeta
+	title={site.title}
+	siteName={site.title}
+	description={nextEvent
+		? `${site.description} Next meetup: ${formatLong(nextEvent.date)} at ${nextEvent.venue}.`
+		: site.description}
+/>
 
 <div class="mx-auto flex min-h-screen max-w-[1400px] flex-col">
 	<!-- Hero: next meetup on a contour-map background -->

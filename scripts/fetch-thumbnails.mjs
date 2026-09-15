@@ -10,12 +10,11 @@
  */
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
+import { findOgImage, get } from './lib/og.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const MAPS_DIR = path.join(ROOT, 'src/content/maps');
 const OUT_DIR = path.join(ROOT, 'static/images/maps');
-const UA = 'Mozilla/5.0 (compatible; GeoTokyoThumbnailBot/1.0; +https://geotokyo.com)';
-const TIMEOUT_MS = 15000;
 const EXT = {
 	'image/jpeg': 'jpg',
 	'image/png': 'png',
@@ -34,42 +33,6 @@ function field(frontmatter, key) {
 	const m = frontmatter.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
 	if (!m) return undefined;
 	return m[1].trim().replace(/^(['"])(.*)\1$/, '$2');
-}
-
-function decodeEntities(s) {
-	return s
-		.replace(/&amp;/g, '&')
-		.replace(/&quot;/g, '"')
-		.replace(/&#39;|&#x27;/g, "'")
-		.replace(/&lt;/g, '<')
-		.replace(/&gt;/g, '>');
-}
-
-/** Returns the first og:image / twitter:image content found in the HTML head. */
-function findOgImage(html) {
-	const metas = html.match(/<meta\b[^>]*>/gi) ?? [];
-	const found = {};
-	for (const tag of metas) {
-		const key = tag.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/i)?.[1]?.toLowerCase();
-		const content = tag.match(/\bcontent\s*=\s*(?:"([^"]*)"|'([^']*)')/i);
-		if (!key || !content) continue;
-		found[key] ??= decodeEntities(content[1] ?? content[2]);
-	}
-	return (
-		found['og:image:secure_url'] ??
-		found['og:image'] ??
-		found['og:image:url'] ??
-		found['twitter:image'] ??
-		found['twitter:image:src']
-	);
-}
-
-async function get(url, accept) {
-	return fetch(url, {
-		headers: { 'user-agent': UA, accept },
-		redirect: 'follow',
-		signal: AbortSignal.timeout(TIMEOUT_MS)
-	});
 }
 
 async function processEntry(file) {
@@ -126,4 +89,6 @@ for (let i = 0; i < files.length; i += 6) {
 }
 
 const count = (s) => results.filter((r) => r.status === s).length;
-console.log(`\n${count('ok')} fetched, ${count('fail')} failed, ${count('skip')} skipped${dryRun ? ' (dry run)' : ''}`);
+console.log(
+	`\n${count('ok')} fetched, ${count('fail')} failed, ${count('skip')} skipped${dryRun ? ' (dry run)' : ''}`
+);

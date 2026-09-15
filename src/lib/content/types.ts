@@ -16,6 +16,8 @@ export interface NavItem {
 /** `src/content/site.md` */
 export interface SiteFrontmatter {
 	title: string;
+	/** Default page description, also used for Open Graph / social previews. */
+	description: string;
 	tagline: string;
 	coordinates: string;
 	lumaUrl: string;
@@ -135,6 +137,8 @@ export interface MapFrontmatter {
 	image?: string;
 	/** ISO date the entry was found or shared. Backfilled from the event's date when an event is set. */
 	date?: string;
+	/** Who added the link. */
+	addedBy?: string;
 }
 
 export interface JapaneseMap extends MapFrontmatter {

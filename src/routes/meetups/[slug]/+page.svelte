@@ -10,12 +10,24 @@
 		PresentedProjectRow,
 		ScheduleRow,
 		SectionLabel,
+		SeoMeta,
 		SpeakerRow
 	} from '$lib/components';
 
 	let { data } = $props();
 	const { event, eventMaps, nextEvent } = $derived(data);
 	const Body = $derived(event.body);
+
+	const ogDescription = $derived(
+		[
+			`${formatLong(event.date)}${event.startTime ? `, ${timeRange(event.startTime, event.endTime)}` : ''} at ${[event.venue, event.city].filter(Boolean).join(', ')}.`,
+			event.highlight
+		]
+			.filter(Boolean)
+			.join(' ')
+	);
+	// Social cards can't use SVG covers; use the first raster photo if there is one.
+	const ogImage = $derived(event.photos?.find((p) => /\.(jpe?g|png|webp)$/i.test(p.src))?.src);
 
 	const meta = $derived([
 		{
@@ -33,10 +45,13 @@
 	]);
 </script>
 
-<svelte:head>
-	<title>{event.title}{event.subtitle ? ` ${event.subtitle}` : ''} · {data.site.title}</title>
-	{#if event.highlight}<meta name="description" content={event.highlight} />{/if}
-</svelte:head>
+<SeoMeta
+	title="{event.title}{event.subtitle ? ` ${event.subtitle}` : ''} · {data.site.title}"
+	siteName={data.site.title}
+	description={ogDescription}
+	image={ogImage}
+	type="article"
+/>
 
 <PageShell site={data.site} organizers={data.organizers} current="/meetups">
 	<!-- Cover + summary -->

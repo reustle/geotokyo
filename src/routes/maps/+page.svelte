@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { FilterChips, MapListRow, PageShell } from '$lib/components';
+	import { FilterChips, MapListRow, PageShell, SeoMeta } from '$lib/components';
 
 	let { data } = $props();
 	let filter = $state('all');
@@ -9,10 +9,11 @@
 	);
 </script>
 
-<svelte:head>
-	<title>Map Links · {data.site.title}</title>
-	<meta name="description" content={data.site.mapsBlurb} />
-</svelte:head>
+<SeoMeta
+	title="Map Links · {data.site.title}"
+	siteName={data.site.title}
+	description={data.site.mapsBlurb}
+/>
 
 <PageShell site={data.site} organizers={data.organizers} current="/maps">
 	<div class="flex flex-col gap-[18px] border-b border-rule px-5 pt-14 pb-8 md:px-10">

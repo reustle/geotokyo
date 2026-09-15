@@ -10,6 +10,7 @@ export { default as MapRow } from './MapRow.svelte';
 export { default as MapThumb } from './MapThumb.svelte';
 export { default as MetaList } from './MetaList.svelte';
 export { default as NewsletterForm } from './NewsletterForm.svelte';
+export { default as SeoMeta } from './SeoMeta.svelte';
 export { default as PageShell } from './PageShell.svelte';
 export { default as PresentedProjectRow } from './PresentedProjectRow.svelte';
 export { default as PhotoGrid } from './PhotoGrid.svelte';

@@ -7,7 +7,7 @@ export const prerender = true;
 export function GET() {
 	return json(
 		maps.map(
-			({ id, name, url, description, host, tags, event, eventLabel, status, date, image }) => ({
+			({
 				id,
 				name,
 				url,
@@ -18,7 +18,21 @@ export function GET() {
 				eventLabel,
 				status,
 				date,
-				image: image ?? null
+				image,
+				addedBy
+			}) => ({
+				id,
+				name,
+				url,
+				description,
+				host,
+				tags,
+				event,
+				eventLabel,
+				status,
+				date,
+				image: image ?? null,
+				addedBy: addedBy ?? null
 			})
 		)
 	);

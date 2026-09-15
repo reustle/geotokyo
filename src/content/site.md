@@ -1,5 +1,6 @@
 ---
 title: Geo Tokyo
+description: Geo Tokyo is an irregular Tokyo meetup for map enthusiasts, cartographers and GIS people. Talks, demos, and a lot of maps on the wall.
 tagline: Tokyo mapping meetup.
 coordinates: 35.6595°N 139.7005°E
 lumaUrl: https://luma.com/tokyotech

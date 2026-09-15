@@ -9,6 +9,8 @@
 		"build": "vite build",
 		"preview": "vite preview --port 4173",
 		"thumbnails": "node scripts/fetch-thumbnails.mjs",
+		"link-meta": "node scripts/link-meta.mjs",
+		"set-thumbnail": "node scripts/set-thumbnail.mjs",
 		"start": "serve build -l ${PORT:-3000}",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
