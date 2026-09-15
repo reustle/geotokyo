@@ -2,6 +2,7 @@
 	import type { Organizer, Site } from '$lib/content/types';
 	import Wordmark from './Wordmark.svelte';
 	import NewsletterForm from './NewsletterForm.svelte';
+	import { NEWSLETTER_ENABLED } from '$lib/config';
 
 	let { site, organizers }: { site: Site; organizers: Organizer[] } = $props();
 	const year = new Date().getFullYear();
@@ -25,11 +26,13 @@
 				</div>
 			{/each}
 		</div>
-		<div class="flex flex-col gap-3">
-			<div class="eyebrow">Newsletter</div>
-			<p class="m-0 text-[12px] leading-[1.6] text-muted">{site.newsletterBlurb}</p>
-			<NewsletterForm />
-		</div>
+		{#if NEWSLETTER_ENABLED}
+			<div class="flex flex-col gap-3">
+				<div class="eyebrow">Newsletter</div>
+				<p class="m-0 text-[12px] leading-[1.6] text-muted">{site.newsletterBlurb}</p>
+				<NewsletterForm />
+			</div>
+		{/if}
 	</div>
 	<div
 		class="flex flex-wrap justify-between gap-x-5 gap-y-2 border-t border-rule-soft px-5 py-[18px] text-[11px] text-faint md:px-12"

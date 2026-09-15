@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { NEWSLETTER_ENABLED } from '$lib/config';
 	import { formatShort, pad2, timeRange } from '$lib/content/format';
 	import {
 		Contour,
@@ -82,9 +83,19 @@
 					<div class="text-[clamp(30px,4.2vw,46px)] leading-[1.1] font-light text-balance">
 						The next Geo Tokyo meetup isn't scheduled yet.
 					</div>
-					<div class="text-[13px] text-muted">Subscribe below and we'll email you when it is.</div>
+					{#if NEWSLETTER_ENABLED}
+						<div class="text-[13px] text-muted">
+							Subscribe below and we'll email you when it is.
+						</div>
+					{:else}
+						<div class="text-[13px] text-muted">Follow us on Luma to hear when it is.</div>
+					{/if}
 				</div>
-				<CtaLink href="#subscribe" class="w-full md:w-auto">GET NOTIFIED →</CtaLink>
+				{#if NEWSLETTER_ENABLED}
+					<CtaLink href="#subscribe" class="w-full md:w-auto">GET NOTIFIED →</CtaLink>
+				{:else}
+					<CtaLink href={site.lumaUrl} class="w-full md:w-auto">FOLLOW ON LUMA →</CtaLink>
+				{/if}
 			{/if}
 		</div>
 	</div>

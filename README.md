@@ -60,5 +60,5 @@ for the frontmatter fields and where each piece renders.
 
 ## Not wired yet
 
-- Newsletter signup shows an inline confirmation but does not call a provider.
+- Newsletter signup is hidden (`NEWSLETTER_ENABLED` in `src/lib/config.ts`). The form shows an inline confirmation but does not call a provider yet.
 - "Submit a project" opens a pre-filled GitHub issue.
