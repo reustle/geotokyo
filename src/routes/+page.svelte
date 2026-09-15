@@ -104,15 +104,15 @@
 		/>
 	</section>
 
-	<!-- Recent Japanese maps -->
+	<!-- Recent map links -->
 	<section id="maps" class="flex flex-col gap-2 px-5 pt-6 pb-8 md:px-12 md:pt-10 md:pb-14">
-		<SectionLabel label="Recent Japanese maps · Data, tools, cartography" class="mb-3">
+		<SectionLabel label="Recent map links · Maps, data, cartography" class="mb-3">
 			{#snippet aside()}{pad2(mapCount)} total{/snippet}
 		</SectionLabel>
 		{#each recentMaps as entry (entry.id)}
 			<MapRow {entry} />
 		{/each}
-		<a href="/maps" class="border-t border-rule pt-4 text-[12px]">All Japanese maps →</a>
+		<a href="/maps" class="border-t border-rule pt-4 text-[12px]">All map links →</a>
 	</section>
 
 	<SiteFooter {site} {organizers} />

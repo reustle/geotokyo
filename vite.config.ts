@@ -5,6 +5,25 @@ import { playwright } from '@vitest/browser-playwright';
 import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 
+/** Rehype plugin: open external links in Markdown content in a new tab. */
+function externalLinksNewTab() {
+	type Node = {
+		type: string;
+		tagName?: string;
+		properties?: Record<string, unknown>;
+		children?: Node[];
+	};
+	const visit = (node: Node) => {
+		const href = node.properties?.href;
+		if (node.tagName === 'a' && typeof href === 'string' && /^https?:\/\//.test(href)) {
+			node.properties!.target = '_blank';
+			node.properties!.rel = ['nofollow', 'noopener'];
+		}
+		node.children?.forEach(visit);
+	};
+	return (tree: Node) => visit(tree);
+}
+
 export default defineConfig({
 	plugins: [
 		tailwindcss(),
@@ -17,7 +36,7 @@ export default defineConfig({
 			adapter: adapter({ fallback: '404.html' }),
 			// Absolute URLs in prerendered output (RSS feed). Set SITE_ORIGIN at build time.
 			prerender: { origin: process.env.SITE_ORIGIN ?? 'http://localhost:4173' },
-			preprocess: [mdsvex({ extensions: ['.svx', '.md'] })],
+			preprocess: [mdsvex({ extensions: ['.svx', '.md'], rehypePlugins: [externalLinksNewTab] })],
 			extensions: ['.svelte', '.svx', '.md']
 		})
 	],

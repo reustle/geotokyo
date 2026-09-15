@@ -17,10 +17,10 @@ src/content/
 ├── site.md              site-wide settings + about text
 ├── organizers/*.md      one file per organizer
 ├── meetups/*.md         one file per meetup, named yyyy-mm.md (filename = URL slug)
-└── maps/*.md               one file per Japanese map / geo project (the "Japanese Maps" collection)
+└── maps/*.md               one file per map link: map, dataset, geo project or post (the "Map Links" collection)
 static/images/
 ├── meetups/<slug>/       covers and photos
-├── maps/                   thumbnails for Japanese map entries
+├── maps/                   thumbnails for map link entries
 └── organizers/          headshots
 ```
 
@@ -34,11 +34,11 @@ coordinates: 35.6595°N 139.7005°E
 lumaUrl: https://luma.com/tokyotech
 githubUrl: https://github.com/liquidx/geotokyo-site
 newsletterBlurb: One email when the next meetup is scheduled…
-mapsIntro: Recent interesting Japanese maps # /maps headline
-mapsBlurb: Basemaps, open datasets, 3D city models… # /maps intro
+mapsIntro: Interesting Maps and Data # /maps headline
+mapsBlurb: Maps, Datasets, Cartography and posts from Japan's Geo community and around the world. # /maps intro
 nav:
   - { label: Meetups, href: /meetups }
-  - { label: Japanese Maps, short: JP Maps, href: /maps }
+  - { label: Map Links, href: /maps } # `short:` optionally sets a narrow-screen label
 ---
 About text (Markdown). Not rendered anywhere yet; kept for future use.
 ```
@@ -58,7 +58,7 @@ city: Shibuya, Tokyo # optional; first part shown in hero
 hosts: [Alastair Tse, Shane Reustle] # optional
 color: '#f9a03f' # optional cover colour (default: accent red)
 ink: '#1e1c19' # optional text colour on the cover
-highlight: One-line summary for cards. # optional
+highlight: One-line summary for cards. # optional; also shown in the event page sidebar
 lumaUrl: https://luma.com/xxxx # optional; enables the RSVP button
 meetupUrl: https://www.meetup.com/geotokyo/events/xxxx/ # optional; older events hosted on Meetup.com
 cover: /images/meetups/2026-09/cover.svg # optional logo shown in the cover block
@@ -77,23 +77,24 @@ projects: # optional; projects presented at this event (any origin, not only Jap
     url: https://protomaps.com # optional
     by: Speaker One # optional
     description: Single-file PMTiles basemaps you can host anywhere. # optional
-maps: [gsi-tiles, plateau] # optional; ids of Japanese map entries discussed at this event
+maps: [gsi-tiles, plateau] # optional; ids of map link entries discussed at this event
 ---
-Description shown in the event sidebar (Markdown).
+Notes (Markdown). Shown in a "Notes" section on the event page, above the projects; omitted when empty.
 ```
 
-## maps/<id>.md — Japanese Maps
+## maps/<id>.md — Map Links
 
-One file per Japanese mapping / geo project, dataset, basemap, 3D model, map or post
+One file per map, dataset, geo project, example, basemap, 3D model or post
 that the group has found or talked about. This is the collection behind the
-"Japanese Maps" nav item and the home-page feed.
+"Map Links" nav item and the home-page feed.
 
 ```yaml
 ---
 name: 国土数値情報 (National Land Numerical Information)
 url: https://nlftp.mlit.go.jp/ksj/ # the host is derived from this
 description: MLIT's open GIS datasets for Japan.
-tags: [data, open data] # one or more; each becomes a filter chip on /maps (`tag: data` also works)
+tags: [dataset, japan] # one or more of: 3d, dataset, basemap, illustration, transit, visualization, japan, historical, api, tool
+date: '2026-05-27' # when it was found or shared; if omitted, taken from the event's date
 event: 8 # optional; event number where it was first shared (or is planned for)
 status: discussed # discussed | planned (defaults from the event date)
 image: /images/maps/kokudo-suuchi.png # optional thumbnail (3:2 at 120px wide on desktop, 1:1 at 64px on mobile)
@@ -101,6 +102,29 @@ date: '2026-05-27' # optional; defaults to the event date, used for ordering
 ---
 Optional longer notes (Markdown). Not rendered yet.
 ```
+
+### Thumbnails
+
+`image:` is a path under `static/`, usually `/images/maps/<id>.<ext>`. Without one, the
+row shows the link's host as a placeholder. To pull Open Graph images automatically:
+
+```sh
+npm run thumbnails                    # every entry without an image
+npm run thumbnails -- plateau kochizu # only these ids
+npm run thumbnails -- --dry-run       # report what would be fetched
+npm run thumbnails -- --force         # refetch even if image is set
+```
+
+The script reads each entry's `url`, takes `og:image` (or `twitter:image`), saves it to
+`static/images/maps/` and writes `image:` into the frontmatter. Sites that hide
+Open Graph tags from scripts (X/Twitter, Instagram, Facebook) will fail; add those by hand.
+Images are saved as-is, so check the file sizes and resize large ones before committing.
+
+Tags are limited to the ten above; each becomes a filter chip on /maps, and the build warns about any other tag.
+
+Entries are sorted newest first by `date`. Give every entry a date; entries with an
+`event` fall back to that meetup's date, and the build warns about any entry that has
+neither.
 
 An entry shows up on an event page when its `event` matches, or when the event
 lists its id under `maps:`. That lets one entry be discussed at several meetups.
@@ -124,7 +148,7 @@ photo: /images/organizers/alastair.jpg # optional, not rendered yet
 | ---------------- | ------------------------------ | ------------- | --------------------------- | -------------- |
 | next event       | hero                           | Upcoming grid | full page, "Next one" aside | event label    |
 | past events      | 3 most recent + "earlier" card | Past grid     | full page                   | event label    |
-| Japanese maps    | 6 most recent                  |               | "Japanese maps discussed"   | list + filters |
+| map links        | 6 most recent                  |               | "Map links discussed"       | list + filters |
 | event `projects` |                                |               | "Projects presented"        |                |
 | organizers       | footer                         | footer        | footer                      | footer         |
 

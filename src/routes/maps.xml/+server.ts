@@ -15,7 +15,7 @@ export function GET({ url }) {
       <title>${esc(l.name)}</title>
       <link>${esc(l.url.startsWith('http') ? l.url : `${base}/maps`)}</link>
       <guid isPermaLink="false">${esc(l.id)}</guid>
-      <description>${esc(`${l.description} — ${l.tags.join(', ')} · shared at ${l.eventLabel}`)}</description>
+      <description>${esc(`${l.description} — ${l.tags.join(', ')}${l.eventLabel ? ` · shared at ${l.eventLabel}` : ''}`)}</description>
       ${l.date ? `<pubDate>${new Date(l.date).toUTCString()}</pubDate>` : ''}
       ${l.tags.map((t) => `<category>${esc(t)}</category>`).join('')}
     </item>`
@@ -25,7 +25,7 @@ export function GET({ url }) {
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>${esc(site.title)} · Japanese maps</title>
+    <title>${esc(site.title)} · Map links</title>
     <link>${base}/maps</link>
     <description>${esc(site.mapsBlurb)}</description>${items}
   </channel>

@@ -36,8 +36,18 @@
 	>
 		<span>© {year} {site.title}</span>
 		<span class="flex flex-wrap gap-5">
-			<a href={site.lumaUrl} class="text-faint no-underline hover:text-accent-hover">Luma</a>
-			<a href={site.githubUrl} class="text-faint no-underline hover:text-accent-hover">GitHub</a>
+			<a
+				href={site.lumaUrl}
+				target="_blank"
+				rel="noopener"
+				class="text-faint no-underline hover:text-accent-hover">Luma</a
+			>
+			<a
+				href={site.githubUrl}
+				target="_blank"
+				rel="noopener"
+				class="text-faint no-underline hover:text-accent-hover">GitHub</a
+			>
 			<span>{site.coordinates}</span>
 		</span>
 	</div>

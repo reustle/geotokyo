@@ -10,7 +10,7 @@
 	<link
 		rel="alternate"
 		type="application/rss+xml"
-		title="{data.site.title} Japanese maps"
+		title="{data.site.title} map links"
 		href="/maps.xml"
 	/>
 </svelte:head>

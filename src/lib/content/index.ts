@@ -26,6 +26,12 @@ const eventModules = import.meta.glob<MarkdownModule<EventFrontmatter>>(
 	'/src/content/meetups/*.md',
 	{ eager: true }
 );
+/** Raw event sources, used to tell whether an event has any Markdown body. */
+const eventSources = import.meta.glob<string>('/src/content/meetups/*.md', {
+	query: '?raw',
+	import: 'default',
+	eager: true
+});
 const mapModules = import.meta.glob<MarkdownModule<MapFrontmatter>>('/src/content/maps/*.md', {
 	eager: true
 });
@@ -33,6 +39,20 @@ const organizerModules = import.meta.glob<MarkdownModule<OrganizerFrontmatter>>(
 	'/src/content/organizers/*.md',
 	{ eager: true }
 );
+
+/** The only tags map links may use; each becomes a filter chip on /maps. */
+export const MAP_TAGS = [
+	'3d',
+	'dataset',
+	'basemap',
+	'illustration',
+	'transit',
+	'visualization',
+	'japan',
+	'historical',
+	'api',
+	'tool'
+] as const;
 
 function normaliseTags(tags?: string[], tag?: string): string[] {
 	const list = (tags ?? (tag ? [tag] : []))
@@ -66,7 +86,8 @@ function buildEvents(): Event[] {
 				label: `#${fm.number}`,
 				upcoming: date >= today,
 				projects: (fm.projects ?? []).map((p) => ({ ...p, host: p.url ? hostOf(p.url) : '' })),
-				body: mod.default
+				body: mod.default,
+				hasBody: (eventSources[path] ?? '').replace(/^---\n[\s\S]*?\n---\n?/, '').trim() !== ''
 			} satisfies Event;
 		})
 		.sort((a, b) => b.number - a.number);
@@ -83,23 +104,45 @@ function buildMaps(events: Event[]): JapaneseMap[] {
 	return Object.entries(mapModules)
 		.map(([path, mod]) => {
 			const fm = mod.metadata;
-			const ev = byNumber.get(fm.event);
+			const ev = fm.event != null ? byNumber.get(fm.event) : undefined;
+			const date = fm.date ? toIsoDate(fm.date) : (ev?.date ?? '');
+			if (!date) {
+				console.warn(
+					`[content] maps/${slugOf(path)}.md has no date and no known event; set \`date:\`.`
+				);
+			}
+			const tags = normaliseTags(fm.tags, fm.tag);
+			const unknown = tags.filter((t) => !(MAP_TAGS as readonly string[]).includes(t));
+			if (unknown.length) {
+				console.warn(
+					`[content] maps/${slugOf(path)}.md uses unknown tags: ${unknown.join(', ')}. Allowed: ${MAP_TAGS.join(', ')}.`
+				);
+			}
 			const status = fm.status ?? (ev?.upcoming ? 'planned' : 'discussed');
 			return {
 				...fm,
 				status,
 				id: slugOf(path),
 				host: hostOf(fm.url),
-				tags: normaliseTags(fm.tags, fm.tag),
-				date: fm.date ? toIsoDate(fm.date) : (ev?.date ?? ''),
-				eventLabel: ev ? (ev.upcoming && ev.subtitle ? ev.subtitle : ev.label) : `#${fm.event}`,
+				tags,
+				date,
+				eventLabel: ev
+					? ev.upcoming && ev.subtitle
+						? ev.subtitle
+						: ev.label
+					: fm.event != null
+						? `#${fm.event}`
+						: undefined,
 				eventColor: ev?.color ?? DEFAULT_COLOR,
 				eventSlug: ev?.slug,
 				body: mod.default
 			} satisfies JapaneseMap;
 		})
 		.sort(
-			(a, b) => b.date.localeCompare(a.date) || b.event - a.event || a.name.localeCompare(b.name)
+			(a, b) =>
+				b.date.localeCompare(a.date) ||
+				(b.event ?? 0) - (a.event ?? 0) ||
+				a.name.localeCompare(b.name)
 		);
 }
 
@@ -121,7 +164,7 @@ export function getEvent(slug: string): Event | undefined {
 }
 
 /**
- * Japanese maps discussed at an event: entries tagged with the event number,
+ * Map links discussed at an event: entries tagged with the event number,
  * plus any ids listed in the event's `maps:` frontmatter.
  */
 export function mapsForEvent(event: Event): JapaneseMap[] {

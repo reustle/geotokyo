@@ -8,7 +8,7 @@ export interface MarkdownModule<T> {
 
 export interface NavItem {
 	label: string;
-	/** Shorter label used on narrow screens, e.g. "JP Maps". */
+	/** Shorter label used on narrow screens, e.g. "Maps". */
 	short?: string;
 	href: string;
 }
@@ -101,7 +101,7 @@ export interface EventFrontmatter {
 	photos?: Photo[];
 	/** Projects presented at this event. */
 	projects?: PresentedProject[];
-	/** Ids of Japanese map entries (filenames in src/content/maps) discussed at this event. */
+	/** Ids of map link entries (filenames in src/content/maps) discussed at this event. */
 	maps?: string[];
 }
 
@@ -115,11 +115,13 @@ export interface Event extends EventFrontmatter {
 	upcoming: boolean;
 	projects: PresentedProjectResolved[];
 	body: Component;
+	/** False when the Markdown file has only frontmatter. */
+	hasBody: boolean;
 }
 
 export type MapStatus = 'discussed' | 'planned';
 
-/** `src/content/maps/*.md` — a Japanese mapping / geo project, dataset, map or post. */
+/** `src/content/maps/*.md` — a map link: a map, dataset, geo project, example or post. */
 export interface MapFrontmatter {
 	name: string;
 	url: string;
@@ -127,11 +129,11 @@ export interface MapFrontmatter {
 	/** One or more tags; these become the filter chips on /maps. `tag: data` (single) also works. */
 	tags?: string[];
 	tag?: string;
-	/** Event number the entry was shared at (or is planned for). */
-	event: number;
+	/** Optional event number the entry was shared at (or is planned for). */
+	event?: number;
 	status?: MapStatus;
 	image?: string;
-	/** Optional ISO date used for ordering; defaults to the event's date. */
+	/** ISO date the entry was found or shared. Backfilled from the event's date when an event is set. */
 	date?: string;
 }
 
@@ -141,9 +143,10 @@ export interface JapaneseMap extends MapFrontmatter {
 	/** Normalised tag list (never empty; falls back to "misc"). */
 	tags: string[];
 	status: MapStatus;
+	/** Resolved date: `date`, else the event's date, else '' (sorts last). */
 	date: string;
-	/** `#8`, or the event's short name for upcoming events. */
-	eventLabel: string;
+	/** `#8`, or the event's subtitle for upcoming events. Undefined when no event is set. */
+	eventLabel?: string;
 	eventColor: string;
 	eventSlug?: string;
 	body: Component;

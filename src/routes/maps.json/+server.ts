@@ -3,7 +3,7 @@ import { maps } from '$lib/content';
 
 export const prerender = true;
 
-/** Machine-readable export of every Japanese map entry, newest first. */
+/** Machine-readable export of every map link entry, newest first. */
 export function GET() {
 	return json(
 		maps.map(

@@ -2,6 +2,8 @@
 	import type { PresentedProjectResolved } from '$lib/content/types';
 	/** One-line row for a project presented at an event. Links out when a URL is given. */
 	let { project }: { project: PresentedProjectResolved } = $props();
+
+	const external = $derived(/^https?:\/\//.test(project.url ?? ''));
 </script>
 
 {#snippet inner()}
@@ -17,6 +19,8 @@
 {#if project.url}
 	<a
 		href={project.url}
+		target={external ? '_blank' : undefined}
+		rel={external ? 'noopener' : undefined}
 		class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1 border-b border-dashed border-rule-mid py-[10px] text-[13px] text-ink no-underline hover:text-accent-hover md:grid-cols-[minmax(0,1fr)_auto_auto]"
 	>
 		{@render inner()}

@@ -4,10 +4,14 @@
 
 	/** Feed row: thumbnail + name/description/meta. The whole row is the anchor. */
 	let { entry }: { entry: JapaneseMap } = $props();
+
+	const external = $derived(/^https?:\/\//.test(entry.url));
 </script>
 
 <a
 	href={entry.url}
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noopener' : undefined}
 	class="grid grid-cols-[64px_minmax(0,1fr)] items-start gap-[14px] border-t border-rule py-[18px] text-ink no-underline hover:text-accent-hover md:grid-cols-[120px_minmax(0,1fr)] md:gap-6"
 >
 	<MapThumb {entry} class="aspect-square md:aspect-[3/2]" />
@@ -15,7 +19,10 @@
 		<div class="text-[16px] leading-[1.35]">{entry.name}</div>
 		<div class="max-w-[520px] text-[13px] leading-[1.6] text-muted">{entry.description}</div>
 		<div class="mt-[2px] text-[11px] text-faint">
-			↗ {entry.host} · {entry.tags.join(' · ')} · shared at {entry.eventLabel}
+			<span>↗ {entry.host}</span>
+			<span>· {entry.tags.join(' · ')}</span>
+			{#if entry.date}<span>· {entry.date}</span>{/if}
+			{#if entry.eventLabel}<span>· shared at {entry.eventLabel}</span>{/if}
 		</div>
 	</div>
 </a>

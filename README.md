@@ -45,13 +45,13 @@ docker run --rm -p 8080:80 geotokyo-site   # http://localhost:8080
 
 ## Content
 
-Events, Japanese maps, organizers and site settings are Markdown files under
+Events, map links, organizers and site settings are Markdown files under
 `src/content/`; images live in `static/images/`. See [CONTENT.md](./CONTENT.md)
 for the frontmatter fields and where each piece renders.
 
 ## Layout
 
-- `src/routes/` — pages: `/`, `/meetups`, `/meetups/[slug]`, `/maps` (Japanese Maps), plus
+- `src/routes/` — pages: `/`, `/meetups`, `/meetups/[slug]`, `/maps` (Map Links), plus
   `/maps.json` and `/maps.xml` exports.
 - `src/lib/components/` — reusable UI components.
 - `src/lib/content/` — content loader (`import.meta.glob` over the Markdown files),
