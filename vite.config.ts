@@ -31,7 +31,13 @@ export default defineConfig({
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 				runes: ({ filename }) =>
-					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
+					filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
+				// mdsvex still emits <script context="module"> for frontmatter; not fixable from content.
+				warningFilter: (warning) =>
+					!(
+						warning.code === 'script_context_deprecated' &&
+						/\.(md|svx)$/.test(warning.filename ?? '')
+					)
 			},
 			adapter: adapter({ fallback: '404.html' }),
 			// Absolute URLs in prerendered output (RSS feed). Set SITE_ORIGIN at build time.
