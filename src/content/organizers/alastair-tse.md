@@ -1,5 +1,5 @@
 ---
 name: Alastair Tse
-role: Independent Researcher, Software Engineer
+role: Independent Researcher
 order: 1
 ---
