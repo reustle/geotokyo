@@ -16,7 +16,7 @@ Tip: quote any YAML value that contains `#`, `:` or starts with `[`, e.g.
 src/content/
 ├── site.md              site-wide settings + about text
 ├── organizers/*.md      one file per organizer
-├── meetups/*.md         one file per meetup (filename = URL slug: /meetups/<slug>)
+├── meetups/*.md         one file per meetup, named yyyy-mm.md (filename = URL slug)
 └── maps/*.md               one file per Japanese map / geo project (the "Japanese Maps" collection)
 static/images/
 ├── meetups/<slug>/       covers and photos
@@ -61,17 +61,17 @@ ink: '#1e1c19' # optional text colour on the cover
 highlight: One-line summary for cards. # optional
 lumaUrl: https://luma.com/xxxx # optional; enables the RSVP button
 meetupUrl: https://www.meetup.com/geotokyo/events/xxxx/ # optional; older events hosted on Meetup.com
-cover: /images/meetups/summer-2026/cover.svg # optional logo shown in the cover block
+cover: /images/meetups/2026-09/cover.svg # optional logo shown in the cover block
 speakers: # optional
   - name: Speaker One
     role: Cartographer
     talk: Styling a basemap so people actually read it
-    photo: /images/meetups/summer-2026/speaker-one.jpg
+    photo: /images/meetups/2026-09/speaker-one.jpg
     note: '[placeholder]' # small grey suffix after the name
 schedule: # optional
   - { time: '18:00', what: 'Doors, drinks, maps on the wall' }
 photos: # optional; first photo is shown large
-  - { src: /images/meetups/summer-2026/01.jpg, alt: Room shot }
+  - { src: /images/meetups/2026-09/01.jpg, alt: Room shot }
 projects: # optional; projects presented at this event (any origin, not only Japanese)
   - name: Protomaps
     url: https://protomaps.com # optional
