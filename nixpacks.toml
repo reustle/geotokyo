@@ -4,12 +4,18 @@
 
 providers = ["node"]
 
+# The Node version comes from .nvmrc: Nixpacks picks its nixpkgs archive from
+# .nvmrc/engines only, so NIXPACKS_NODE_VERSION alone yields "undefined variable nodejs_24".
 [variables]
 NIXPACKS_NODE_VERSION = "24"
-NODE_ENV = "production"
+COREPACK_ENABLE_DOWNLOAD_PROMPT = "0"
+# No NODE_ENV=production: pnpm would skip devDependencies, which the build and `serve` need.
 
+# Node's bundled corepack lives in the read-only Nix store, so install a fresh copy
+# globally (as Nixpacks' own corepack path does) before enabling it.
 [phases.install]
 cmds = [
+  "npm install -g corepack@latest",
   "corepack enable",
   "corepack prepare pnpm@11.2.2 --activate",
   "pnpm install --frozen-lockfile"
