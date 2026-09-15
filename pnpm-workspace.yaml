@@ -4,3 +4,8 @@ allowBuilds:
 onlyBuiltDependencies:
   - workerd
   - esbuild
+
+overrides:
+  # kit 2.x pins cookie ^0.6.0 (GHSA-pxg6-pf52-xh8x, fixed in 0.7.0). 0.7.x keeps the parse/serialize API;
+  # cookie 2.x renamed it, so it must not be forced. Remove once kit depends on cookie >=0.7.
+  cookie@<0.7.0: ^0.7.2
