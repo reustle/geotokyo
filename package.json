@@ -4,14 +4,14 @@
 	"version": "0.0.1",
 	"type": "module",
 	"devEngines": {
-	"packageManager":  {
-	  "name": "pnpm",
-	  "version": "12.4.1"
-	},
-	"runtime": {
-      "name": "node",
-      "version": "24"
-    }
+		"packageManager": {
+			"name": "pnpm",
+			"version": "12.4.1"
+		},
+		"runtime": {
+			"name": "node",
+			"version": "24"
+		}
 	},
 	"scripts": {
 		"dev": "vite dev",
