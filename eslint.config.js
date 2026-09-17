@@ -10,6 +10,8 @@ const gitignorePath = path.resolve(import.meta.dirname, '.gitignore');
 
 export default defineConfig(
 	includeIgnoreFile(gitignorePath),
+	// Content and docs are Markdown (mdsvex), not code.
+	{ ignores: ['**/*.md'] },
 	js.configs.recommended,
 	ts.configs.recommended,
 	svelte.configs.recommended,

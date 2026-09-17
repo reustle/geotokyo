@@ -9,3 +9,6 @@ bun.lockb
 /static/
 
 .gemini
+
+# Content and docs (frontmatter uses double quotes; see CONTENT.md)
+*.md
