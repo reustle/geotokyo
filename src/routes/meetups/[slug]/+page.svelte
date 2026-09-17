@@ -3,6 +3,7 @@
 	import {
 		CtaLink,
 		EventCover,
+		FilterChips,
 		MapCompactRow,
 		MetaList,
 		PageShell,
@@ -15,7 +16,16 @@
 	} from '$lib/components';
 
 	let { data } = $props();
-	const { event, eventMaps, nextEvent } = $derived(data);
+	const { event, eventMaps, eventMapTags, nextEvent } = $derived(data);
+	let mapFilter = $state('all');
+	// Reset the tag filter when navigating to another meetup.
+	$effect.pre(() => {
+		void event.slug;
+		mapFilter = 'all';
+	});
+	const visibleMaps = $derived(
+		mapFilter === 'all' ? eventMaps : eventMaps.filter((m) => m.tags.includes(mapFilter))
+	);
 	const Body = $derived(event.body);
 
 	const ogDescription = $derived(
@@ -142,11 +152,16 @@
 		<SectionLabel label={event.upcoming ? 'Map links on the agenda' : 'Map links discussed'}>
 			{#snippet aside()}<a href="/maps">all map links →</a>{/snippet}
 		</SectionLabel>
-		{#each eventMaps as entry (entry.id)}
-			<MapCompactRow {entry} />
-		{:else}
-			<p class="m-0 text-[12px] text-faint">Nothing here yet.</p>
-		{/each}
+		{#if eventMapTags.length > 1}
+			<FilterChips options={eventMapTags} bind:value={mapFilter} />
+		{/if}
+		<div class="flex flex-col gap-4">
+			{#each visibleMaps as entry (entry.id)}
+				<MapCompactRow {entry} />
+			{:else}
+				<p class="m-0 text-[12px] text-faint">Nothing here yet.</p>
+			{/each}
+		</div>
 	</div>
 
 	<!-- Next meetup, at the bottom of the page -->

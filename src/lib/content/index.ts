@@ -164,15 +164,17 @@ export function getEvent(slug: string): Event | undefined {
 }
 
 /**
- * Map links discussed at an event: entries tagged with the event number,
- * plus any ids listed in the event's `maps:` frontmatter.
+ * Map links discussed at an event, alphabetical by name: entries tagged with the
+ * event number, plus any ids listed in the event's `maps:` frontmatter.
  */
 export function mapsForEvent(event: Event): JapaneseMap[] {
 	const ids = new Set(event.maps ?? []);
-	return maps.filter((m) => m.event === event.number || ids.has(m.id));
+	return maps
+		.filter((m) => m.event === event.number || ids.has(m.id))
+		.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
 }
 
-/** Distinct tags, alphabetical, across every entry. */
-export function mapTags(): string[] {
-	return [...new Set(maps.flatMap((m) => m.tags))].sort();
+/** Distinct tags, alphabetical, across the given entries (default: every entry). */
+export function mapTags(entries: JapaneseMap[] = maps): string[] {
+	return [...new Set(entries.flatMap((m) => m.tags))].sort();
 }
