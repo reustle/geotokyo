@@ -29,7 +29,7 @@ export function GET() {
 				tags,
 				event,
 				eventLabel,
-				status,
+				status: status ?? null,
 				date,
 				image: image ?? null,
 				addedBy: addedBy ?? null

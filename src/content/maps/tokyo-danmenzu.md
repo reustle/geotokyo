@@ -5,7 +5,7 @@ description: "chizutodesign's 3D model of 13 Tokyo Metro and Toei subway lines a
 tags: [3d, transit, japan]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/tokyo-danmenzu.jpg
 ---

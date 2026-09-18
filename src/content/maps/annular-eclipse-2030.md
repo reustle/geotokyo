@@ -5,7 +5,7 @@ description: "timeanddate.com's path map and local times for the 1 June 2030 ann
 tags: [visualization, japan]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/annular-eclipse-2030.png
 ---

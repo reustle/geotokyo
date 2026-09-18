@@ -5,7 +5,7 @@ description: 'Turns OpenStreetMap, NASA and USGS data for any location on earth 
 tags: [3d, tool]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/cadmapper.jpg
 ---

@@ -95,24 +95,43 @@ name: 国土数値情報 (National Land Numerical Information)
 url: https://nlftp.mlit.go.jp/ksj/ # the host is derived from this
 description: MLIT's open GIS datasets for Japan.
 tags: [dataset, japan] # one or more of: 3d, dataset, basemap, illustration, transit, visualization, japan, historical, api, tool
-date: '2026-05-27' # when it was found or shared; if omitted, taken from the event's date
+date: '2026-05-27' # the day the link was added; also orders the list. If omitted, taken from the event's date
 event: 8 # optional; event number where it was first shared (or is planned for)
-status: discussed # discussed | planned (defaults from the event date)
-image: /images/maps/kokudo-suuchi.png # optional thumbnail (3:2 at 120px wide on desktop, 1:1 at 64px on mobile)
+status: discussed # optional; discussed | planned. Unset until the link is planned for a meetup
 addedBy: Alastair Tse # optional; who added the link (exported in /maps.json, not rendered yet)
-date: '2026-05-27' # optional; defaults to the event date, used for ordering
+image: /images/maps/kokudo-suuchi.png # optional thumbnail (3:2 at 120px wide on desktop, 1:1 at 64px on mobile)
 ---
 Optional longer notes (Markdown). Not rendered yet.
 ```
 
+A link starts with no `event` and no `status`: it is just something worth keeping. Those two
+keys are set later, when it goes on a meetup's list and after it has been shown.
+
 ### Adding a link with Claude Code
 
-The `add-map-link` skill (`.claude/skills/add-map-link/`) does all of this for you: give
-Claude Code a URL ("add this to map links for the next meetup") and it fetches the title,
-description and thumbnail, writes the entry as `status: planned` for the next meetup, and
-runs the build to check it. You can also give it your own description to use instead of
-the page's, and say who added it (defaults to your git `user.name`), e.g.
-"add https://example.com for the next meetup, description: …, added by Shane Reustle". `npm run link-meta -- <url>` prints the metadata it starts from.
+Three skills cover the life of a link:
+
+| skill                | what it does                                                             |
+| -------------------- | ------------------------------------------------------------------------ |
+| `add-map-link`       | URL → new entry with title, description and thumbnail; no event or status |
+| `add-map-to-event`   | Sets `event:` (next meetup by default) and `status: planned`              |
+| `set-map-discussed`  | Sets `status: discussed` once it has been shown                           |
+
+Give Claude Code a URL ("add this to map links") and `add-map-link` fetches the title,
+description and thumbnail and runs the build to check the entry. You can give it your own
+description to use instead of the page's, and say who added it (defaults to your git
+`user.name`), e.g. "add https://example.com, description: …, added by Shane Reustle".
+`npm run link-meta -- <url>` prints the metadata it starts from.
+
+Later, "let's bring these up next time" runs `add-map-to-event`, and "we covered these"
+runs `set-map-discussed`. Both wrap one script, which is also usable directly:
+
+```sh
+npm run map-status -- --next-event                        # the next upcoming meetup, as JSON
+npm run map-status -- train-jazz --event=next --status=planned
+npm run map-status -- train-jazz world-train-map --status=discussed
+npm run map-status -- train-jazz --event=none --status=none   # back to unplanned
+```
 
 ### Thumbnails
 

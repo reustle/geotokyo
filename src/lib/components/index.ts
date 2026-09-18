@@ -18,5 +18,6 @@ export { default as ScheduleRow } from './ScheduleRow.svelte';
 export { default as SectionLabel } from './SectionLabel.svelte';
 export { default as SiteFooter } from './SiteFooter.svelte';
 export { default as SiteHeader } from './SiteHeader.svelte';
+export { default as SortToggle } from './SortToggle.svelte';
 export { default as SpeakerRow } from './SpeakerRow.svelte';
 export { default as Wordmark } from './Wordmark.svelte';

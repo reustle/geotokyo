@@ -5,7 +5,7 @@ description: 'Click a prefecture on a tile map of Japan to rank its 2025 net mig
 tags: [visualization, dataset, japan]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/prefecture-inflow-ranking.jpg
 ---

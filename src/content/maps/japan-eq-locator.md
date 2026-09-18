@@ -5,7 +5,7 @@ description: '3D map of earthquake hypocenters around Japan, showing how deep ea
 tags: [3d, visualization, japan]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/japan-eq-locator.jpg
 ---

@@ -5,7 +5,7 @@ description: 'Interactive 3D multi-floor map of Tokyo Game Show 2026 at Makuhari
 tags: [3d, tool, japan]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/tokyo-game-show-2026-map.jpg
 ---

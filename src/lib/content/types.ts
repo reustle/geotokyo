@@ -123,6 +123,9 @@ export interface Event extends EventFrontmatter {
 
 export type MapStatus = 'discussed' | 'planned';
 
+/** Order of the Map Links list: newest first, or alphabetical by name. */
+export type MapSort = 'date' | 'name';
+
 /** `src/content/maps/*.md` — a map link: a map, dataset, geo project, example or post. */
 export interface MapFrontmatter {
 	name: string;
@@ -133,9 +136,10 @@ export interface MapFrontmatter {
 	tag?: string;
 	/** Optional event number the entry was shared at (or is planned for). */
 	event?: number;
+	/** Only set once the link is scheduled for a meetup (`planned`) or has been shown (`discussed`). */
 	status?: MapStatus;
 	image?: string;
-	/** ISO date the entry was found or shared. Backfilled from the event's date when an event is set. */
+	/** ISO date the link was added. Backfilled from the event's date for older entries without one. */
 	date?: string;
 	/** Who added the link. */
 	addedBy?: string;
@@ -146,7 +150,8 @@ export interface JapaneseMap extends MapFrontmatter {
 	host: string;
 	/** Normalised tag list (never empty; falls back to "misc"). */
 	tags: string[];
-	status: MapStatus;
+	/** Resolved status, or undefined for a link not tied to a meetup yet. */
+	status?: MapStatus;
 	/** Resolved date: `date`, else the event's date, else '' (sorts last). */
 	date: string;
 	/** `#8`, or the event's subtitle for upcoming events. Undefined when no event is set. */

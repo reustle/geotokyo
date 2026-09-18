@@ -5,7 +5,7 @@ description: "Mongabay and Earth Genome used AI on satellite imagery to find 67 
 tags: [visualization]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/peru-narco-airstrips.jpg
 ---

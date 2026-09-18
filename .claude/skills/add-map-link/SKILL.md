@@ -1,6 +1,6 @@
 ---
 name: add-map-link
-description: Add a URL to the Geo Tokyo "Map Links" collection as a new src/content/maps/<id>.md entry — fetches the page title, description and Open Graph thumbnail, drafts the frontmatter, and by default marks it as planned for discussion at the next meetup. Use when the user shares a link (map, dataset, geo project, post, tweet) and says to add it, save it for later, queue it for the next meetup, or add it to map links.
+description: Add a URL to the Geo Tokyo "Map Links" collection as a new src/content/maps/<id>.md entry — fetches the page title, description and Open Graph thumbnail and drafts the frontmatter. The entry is not tied to a meetup; planning it for one is the add-map-to-event skill. Use when the user shares a link (map, dataset, geo project, post, tweet) and says to add it, save it for later, or add it to map links.
 ---
 
 # Add a map link
@@ -37,21 +37,27 @@ Prints JSON: `title`, `description`, `siteName`, `lang`, `image` (absolute og:im
 `finalUrl` after redirects, and `existing` — ids of entries that already link to this page.
 
 - If `existing` is non-empty, stop for that URL and tell the user which entry already has it
-  (offer to re-plan it for the next meetup instead).
+  (offer to plan it for the next meetup with the `add-map-to-event` skill instead).
 - If the fetch failed (Node's fetch can't negotiate TLS with some older Japanese government
   servers, e.g. www.gsi.go.jp, even when `curl` works) or returned no title/description (common for X/Twitter, Instagram,
   Facebook and JS-only apps), use WebFetch on the URL to learn what the page is. If that also
   fails, ask the user for a one-line description rather than inventing one.
 
-## 2. Pick the meetup
+## 2. Leave the meetup unset
 
-Default for "future discussion": the next upcoming meetup — the file in
-`src/content/meetups/` with the earliest `date` that is today or later. Use its `number` as
-`event`, its `date` as `date`, and `status: planned`.
+**Omit both `event` and `status` by default.** A new link is just a link: it belongs to no
+meetup and has no status until someone plans it. Scheduling it is a separate step, done
+later with the `add-map-to-event` skill (`status: planned`) and `set-map-discussed`
+(`status: discussed`).
 
-If there is no upcoming meetup, omit `event`, set `date` to today (quoted ISO), and still set
-`status: planned`. If the user names a meetup or says it was already discussed, use that
-event number/date and `status: discussed`.
+Only set them here when the user says so in the same breath:
+
+- "for the next meetup" / "queue it for #9" → run `add-map-to-event` after writing the entry
+  rather than hand-writing the keys.
+- "we discussed this at #7" → set `event: 7` and `status: discussed`.
+
+**`date` is always today** — the day the link is added — as a quoted ISO date
+(`'YYYY-MM-DD'`). It is not a meetup date. Get it from `date +%F` rather than guessing.
 
 ## 3. Write the entry
 
@@ -65,12 +71,15 @@ url: 'https://example.com/'
 description: "One sentence saying what it is and what's interesting about it."
 tags: [visualization, japan]
 date: '2026-09-17'
-event: 8
-status: planned
 addedBy: 'Alastair Tse'
 ---
 ```
 
+Keys go in that order; `event` and `status`, when they exist, sit between `date` and
+`addedBy`.
+
+- **date**: today's date (when the link was added), quoted ISO. Never the meetup date.
+- **event / status**: omitted (see step 2).
 - **name**: the project's own name, not the page's SEO title. Strip suffixes like
   " | Site Name" or "- Home". For Japanese projects the existing style is
   `日本語名 (English Name)` when an English name is known.
@@ -119,5 +128,6 @@ The build prints `[content]` warnings for unknown tags or missing dates — fix 
 new entry. Don't commit unless asked.
 
 Report to the user, per link: the id, name, description (noting if it was theirs or
-drafted from the page), tags, who it's credited to, which meetup it's planned for, and
-whether a thumbnail was saved (with size). Keep it short.
+drafted from the page), tags, who it's credited to, and whether a thumbnail was saved (with
+size). Keep it short. Say the entry isn't tied to a meetup yet and can be planned for one
+with `add-map-to-event`; only mention a meetup if the user asked for one.

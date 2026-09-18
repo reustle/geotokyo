@@ -5,7 +5,7 @@ description: 'Map of 1,093 EV charging sites across Hokkaido with a distance ove
 tags: [visualization, japan]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/hokkaido-ev-chargers.jpg
 ---

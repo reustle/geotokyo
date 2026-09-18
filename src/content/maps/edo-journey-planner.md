@@ -5,7 +5,7 @@ description: "chizutodesign's route planner along Edo-period highways and post t
 tags: [historical, tool, japan]
 date: '2026-09-17'
 event: 8
-status: planned
+status: discussed
 addedBy: 'Alastair Tse'
 image: /images/maps/edo-journey-planner.jpg
 ---

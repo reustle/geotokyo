@@ -8,6 +8,7 @@ import type {
 	EventFrontmatter,
 	JapaneseMap,
 	MapFrontmatter,
+	MapSort,
 	MarkdownModule,
 	Organizer,
 	OrganizerFrontmatter,
@@ -118,7 +119,9 @@ function buildMaps(events: Event[]): JapaneseMap[] {
 					`[content] maps/${slugOf(path)}.md uses unknown tags: ${unknown.join(', ')}. Allowed: ${MAP_TAGS.join(', ')}.`
 				);
 			}
-			const status = fm.status ?? (ev?.upcoming ? 'planned' : 'discussed');
+			// A link with no event hasn't been scheduled yet, so it has no status.
+			const status =
+				fm.status ?? (fm.event != null ? (ev?.upcoming ? 'planned' : 'discussed') : undefined);
 			return {
 				...fm,
 				status,
@@ -172,6 +175,26 @@ export function mapsForEvent(event: Event): JapaneseMap[] {
 	return maps
 		.filter((m) => m.event === event.number || ids.has(m.id))
 		.sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+}
+
+/** Sort options offered on /maps, in the order the buttons appear. */
+export const MAP_SORTS: { value: MapSort; label: string }[] = [
+	{ value: 'date', label: 'newest' },
+	{ value: 'name', label: 'a–z' }
+];
+
+/**
+ * Copy of `entries` ordered by when the link was added (newest first, the default)
+ * or alphabetically by name. Never mutates the input.
+ */
+export function sortMaps(entries: JapaneseMap[], order: MapSort = 'date'): JapaneseMap[] {
+	const byName = (a: JapaneseMap, b: JapaneseMap) =>
+		a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+	return [...entries].sort((a, b) =>
+		order === 'name'
+			? byName(a, b)
+			: b.date.localeCompare(a.date) || (b.event ?? 0) - (a.event ?? 0) || byName(a, b)
+	);
 }
 
 /** Distinct tags, alphabetical, across the given entries (default: every entry). */
