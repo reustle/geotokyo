@@ -117,6 +117,14 @@
 		</div>
 	{/if}
 
+	<!-- Notes (Markdown body) -->
+	{#if event.hasBody}
+		<div class="flex flex-col gap-5 border-b border-rule px-5 py-7 md:px-10 md:py-9">
+			<SectionLabel label="Notes" />
+			<div class="prose-geo max-w-[720px]"><Body /></div>
+		</div>
+	{/if}
+
 	<!-- Photos -->
 	{#if event.photos?.length}
 		<div class="flex flex-col gap-5 border-b border-rule px-5 py-7 md:px-10 md:py-9">
@@ -124,14 +132,6 @@
 				{#snippet aside()}{event.photos?.length}{/snippet}
 			</SectionLabel>
 			<PhotoGrid photos={event.photos} />
-		</div>
-	{/if}
-
-	<!-- Notes (Markdown body) -->
-	{#if event.hasBody}
-		<div class="flex flex-col gap-5 border-b border-rule px-5 py-7 md:px-10 md:py-9">
-			<SectionLabel label="Notes" />
-			<div class="prose-geo max-w-[720px]"><Body /></div>
 		</div>
 	{/if}
 

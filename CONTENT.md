@@ -73,7 +73,7 @@ speakers: # optional
     note: '[placeholder]' # small grey suffix after the name
 schedule: # optional
   - { time: '18:00', what: 'Doors, drinks, maps on the wall' }
-photos: # optional; first photo is shown large
+photos: # optional; shown under the notes, above the projects. First photo is shown large
   - { src: /images/meetups/2026-09/01.jpg, alt: Room shot }
 projects: # optional; projects presented at this event (any origin, not only Japanese)
   - name: Protomaps
@@ -82,7 +82,7 @@ projects: # optional; projects presented at this event (any origin, not only Jap
     description: Single-file PMTiles basemaps you can host anywhere. # optional
 maps: [gsi-tiles, plateau] # optional; ids of map link entries discussed at this event
 ---
-Notes (Markdown). Shown in a "Notes" section on the event page, above the projects; omitted when empty.
+Notes (Markdown). Shown in a "Notes" section on the event page, above the photos and projects; omitted when empty.
 ```
 
 ## maps/<id>.md — Map Links
