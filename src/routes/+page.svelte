@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { NEWSLETTER_ENABLED } from '$lib/config';
 	import { formatLong, formatShort, pad2, timeRange } from '$lib/content/format';
 	import {
 		Contour,
@@ -85,21 +84,11 @@
 			{:else}
 				<div class="flex min-w-0 flex-[1_1_480px] flex-col gap-[14px]">
 					<div class="text-[clamp(30px,4.2vw,46px)] leading-[1.1] font-light text-balance">
-						The next Geo Tokyo meetup isn't scheduled yet.
+						{site.heroIntro}
 					</div>
-					{#if NEWSLETTER_ENABLED}
-						<div class="text-[13px] text-muted">
-							Subscribe below and we'll email you when it is.
-						</div>
-					{:else}
-						<div class="text-[13px] text-muted">Follow us on Luma to hear when it is.</div>
-					{/if}
+					<p class="m-0 max-w-[560px] text-[13px] leading-[1.7] text-muted">{site.heroBlurb}</p>
 				</div>
-				{#if NEWSLETTER_ENABLED}
-					<CtaLink href="#subscribe" class="w-full md:w-auto">GET NOTIFIED →</CtaLink>
-				{:else}
-					<CtaLink href={site.lumaUrl} class="w-full md:w-auto">FOLLOW ON LUMA →</CtaLink>
-				{/if}
+				<CtaLink href={site.lumaUrl} class="w-full md:w-auto">FOLLOW ON LUMA →</CtaLink>
 			{/if}
 		</div>
 	</div>

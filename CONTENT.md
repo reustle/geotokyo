@@ -35,6 +35,8 @@ coordinates: 35.6595°N 139.7005°E
 lumaUrl: https://luma.com/tokyotech
 githubUrl: https://github.com/liquidx/geotokyo-site
 newsletterBlurb: One email when the next meetup is scheduled…
+heroIntro: Geo Tokyo Meetup # home-page hero headline, shown when no meetup is scheduled
+heroBlurb: Tokyo-based meetup for mapping, GIS enthusiasts and practitioners… # sits under it
 mapsIntro: Interesting Maps and Data # /maps headline
 mapsBlurb: Maps, Datasets, Cartography and posts from Japan's Geo community and around the world. # /maps intro
 nav:

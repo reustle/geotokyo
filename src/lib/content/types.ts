@@ -23,6 +23,9 @@ export interface SiteFrontmatter {
 	lumaUrl: string;
 	githubUrl: string;
 	newsletterBlurb: string;
+	/** Home-page hero headline and blurb, shown when no meetup is scheduled. */
+	heroIntro: string;
+	heroBlurb: string;
 	mapsIntro: string;
 	mapsBlurb: string;
 	nav: NavItem[];
