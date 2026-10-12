@@ -64,3 +64,8 @@ export function hostOf(url: string): string {
 		return '—';
 	}
 }
+
+/** True for jpg/png/webp paths: photos, as opposed to SVG logos. */
+export function isRasterImage(src?: string): boolean {
+	return !!src && /\.(jpe?g|png|webp)$/i.test(src);
+}

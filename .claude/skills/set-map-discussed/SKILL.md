@@ -47,7 +47,7 @@ is fine.
 
 ```sh
 npx prettier --write src/content/maps/<id>.md
-npm run build 2>&1 | grep -iE "\[content\]|error" || true
+pnpm run build 2>&1 | grep -iE "\[content\]|error" || true
 ```
 
 List what changed (id, and the event it's credited to when one is set) and anything you

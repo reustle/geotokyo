@@ -64,7 +64,7 @@ ink: '#1e1c19' # optional text colour on the cover
 highlight: One-line summary for cards. # optional; also shown in the event page sidebar
 lumaUrl: https://luma.com/xxxx # optional; enables the RSVP button
 meetupUrl: https://www.meetup.com/geotokyo/events/xxxx/ # optional; older events hosted on Meetup.com
-cover: /images/meetups/2026-09/cover.svg # optional logo shown in the cover block
+cover: /images/meetups/2026-09-cover.jpg # optional; a jpg/png/webp is shown as the whole cover (16:9, title baked in) and as the social preview, an svg as a logo inside the coloured block
 speakers: # optional
   - name: Speaker One
     role: Cartographer
@@ -123,16 +123,16 @@ Give Claude Code a URL ("add this to map links") and `add-map-link` fetches the 
 description and thumbnail and runs the build to check the entry. You can give it your own
 description to use instead of the page's, and say who added it (defaults to your git
 `user.name`), e.g. "add https://example.com, description: …, added by Shane Reustle".
-`npm run link-meta -- <url>` prints the metadata it starts from.
+`pnpm run link-meta <url>` prints the metadata it starts from.
 
 Later, "let's bring these up next time" runs `add-map-to-event`, and "we covered these"
 runs `set-map-discussed`. Both wrap one script, which is also usable directly:
 
 ```sh
-npm run map-status -- --next-event                        # the next upcoming meetup, as JSON
-npm run map-status -- train-jazz --event=next --status=planned
-npm run map-status -- train-jazz world-train-map --status=discussed
-npm run map-status -- train-jazz --event=none --status=none   # back to unplanned
+pnpm run map-status --next-event                           # the next upcoming meetup, as JSON
+pnpm run map-status train-jazz --event=next --status=planned
+pnpm run map-status train-jazz world-train-map --status=discussed
+pnpm run map-status train-jazz --event=none --status=none      # back to unplanned
 ```
 
 ### Thumbnails
@@ -141,10 +141,10 @@ npm run map-status -- train-jazz --event=none --status=none   # back to unplanne
 row shows the link's host as a placeholder. To pull Open Graph images automatically:
 
 ```sh
-npm run thumbnails                    # every entry without an image
-npm run thumbnails -- plateau kochizu # only these ids
-npm run thumbnails -- --dry-run       # report what would be fetched
-npm run thumbnails -- --force         # refetch even if image is set
+pnpm run thumbnails                    # every entry without an image
+pnpm run thumbnails plateau kochizu    # only these ids
+pnpm run thumbnails --dry-run          # report what would be fetched
+pnpm run thumbnails --force            # refetch even if image is set
 ```
 
 The script reads each entry's `url`, takes `og:image` (or `twitter:image`), saves it to
@@ -155,11 +155,11 @@ Images are saved as-is, so check the file sizes and resize large ones before com
 To set a thumbnail by hand (or with the `set-map-thumbnail` Claude Code skill):
 
 ```sh
-npm run set-thumbnail -- <id> screenshot             # headless Chrome screenshot of the entry's url
-npm run set-thumbnail -- <id> screenshot --wait=8000 --selector=canvas
-npm run set-thumbnail -- <id> clipboard              # image you copied (e.g. ⌃⇧⌘4)
-npm run set-thumbnail -- <id> ~/Desktop/shot.png     # local file
-npm run set-thumbnail -- <id> https://…/image.jpg    # image URL
+pnpm run set-thumbnail <id> screenshot             # headless Chrome screenshot of the entry's url
+pnpm run set-thumbnail <id> screenshot --wait=8000 --selector=canvas
+pnpm run set-thumbnail <id> clipboard              # image you copied (e.g. ⌃⇧⌘4)
+pnpm run set-thumbnail <id> ~/Desktop/shot.png     # local file
+pnpm run set-thumbnail <id> https://…/image.jpg    # image URL
 ```
 
 It resizes to ≤1200px wide, saves JPEG for screenshots, and updates `image:` for you.

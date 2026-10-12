@@ -98,7 +98,7 @@ transit, visualization, japan, historical, api, tool`. Add `japan` when the subj
 ## 4. Thumbnail
 
 ```sh
-npm run thumbnails -- <id>
+pnpm run thumbnails <id>
 ```
 
 Downloads og:image to `static/images/maps/<id>.<ext>` and writes `image:` into the entry.
@@ -121,7 +121,7 @@ reading it; if it's useless, delete the file and the `image:` line.
 
 ```sh
 npx prettier --write src/content/maps/<id>.md
-npm run build 2>&1 | grep -iE "\[content\]|error" || true
+pnpm run build 2>&1 | grep -iE "\[content\]|error" || true
 ```
 
 The build prints `[content]` warnings for unknown tags or missing dates — fix any for the

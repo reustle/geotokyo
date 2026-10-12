@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { formatCoverDate, formatLong, formatShort, timeRange } from '$lib/content/format';
+	import {
+		formatCoverDate,
+		formatLong,
+		formatShort,
+		isRasterImage,
+		timeRange
+	} from '$lib/content/format';
 	import {
 		CtaLink,
 		EventCover,
@@ -36,8 +42,10 @@
 			.filter(Boolean)
 			.join(' ')
 	);
-	// Social cards can't use SVG covers; use the first raster photo if there is one.
-	const ogImage = $derived(event.photos?.find((p) => /\.(jpe?g|png|webp)$/i.test(p.src))?.src);
+	// Social cards can't use SVG covers; use a raster cover, or else the first raster photo.
+	const ogImage = $derived(
+		isRasterImage(event.cover) ? event.cover : event.photos?.find((p) => isRasterImage(p.src))?.src
+	);
 
 	const meta = $derived([
 		{
