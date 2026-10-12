@@ -59,7 +59,7 @@ Don't hand-edit the frontmatter for this; the script keeps the key order consist
 
 ```sh
 npx prettier --write src/content/maps/<id>.md
-npm run build 2>&1 | grep -iE "\[content\]|error" || true
+pnpm run build 2>&1 | grep -iE "\[content\]|error" || true
 ```
 
 Report which entries are now planned for which meetup (number and date), and note any the
